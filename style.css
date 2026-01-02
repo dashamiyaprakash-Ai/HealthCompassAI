@@ -1,103 +1,99 @@
 :root {
-  --bg: #f5f7fa;
-  --text: #222;
-  --card: #ffffff;
-  --primary: #0a6cf1;
+  --bg-light: #EBF4DD;
+  --bg-card: #90AB8B;
+  --primary: #5A7863;
+  --text: #3B4953;
+  --accent: #5A7863;
+  --btn-text: #EBF4DD;
+  --btn-bg: #5A7863;
+  --btn-hover: #3B4953;
 }
 
 body.dark {
-  --bg: #121212;
-  --text: #f1f1f1;
-  --card: #1e1e1e;
+  --bg-light: #3B4953;
+  --bg-card: #5A7863;
+  --primary: #90AB8B;
+  --text: #EBF4DD;
+  --accent: #90AB8B;
+  --btn-text: #EBF4DD;
+  --btn-bg: #90AB8B;
+  --btn-hover: #5A7863;
 }
 
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: var(--bg);
+  margin: 0;
+  background: var(--bg-light);
   color: var(--text);
-  transition: 0.3s;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 1rem;
   background: var(--primary);
-  color: #fff;
+  color: var(--btn-text);
 }
 
-.navbar a {
-  color: #fff;
-  margin: 0 10px;
-  text-decoration: none;
-}
-
-.theme-toggle {
-  background: none;
+.navbar button {
+  padding: 0.5rem 1rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
   border: none;
-  font-size: 20px;
-  color: #fff;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.navbar button:hover {
+  background: var(--btn-hover);
 }
 
 .hero {
   text-align: center;
-  padding: 40px;
+  padding: 2rem;
+  background: var(--bg-light);
 }
 
-.features, .dashboard, .ai {
-  padding: 30px;
+section {
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-}
-
-.card {
-  background: var(--card);
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-form input, form select {
-  display: block;
+input[type="number"], input[type="text"] {
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-}
-
-button {
-  padding: 10px 15px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0.5rem 0 1rem 0;
+  border: 1px solid var(--accent);
   border-radius: 5px;
 }
 
-.actions button {
-  margin: 5px;
+button {
+  padding: 0.7rem 1.5rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.report {
-  margin-top: 20px;
-  background: var(--card);
-  padding: 15px;
-  border-radius: 8px;
+button:hover {
+  background: var(--btn-hover);
 }
 
-.chat-box {
-  background: var(--card);
-  padding: 15px;
-  border-radius: 8px;
+#chat p {
+  background: var(--bg-card);
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin: 0.5rem 0;
 }
 
 footer {
   text-align: center;
-  padding: 10px;
+  padding: 1rem;
+  background: var(--primary);
+  color: var(--btn-text);
+  margin-top: 2rem;
 }
