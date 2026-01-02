@@ -1,0 +1,103 @@
+:root {
+  --bg: #f5f7fa;
+  --text: #222;
+  --card: #ffffff;
+  --primary: #0a6cf1;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f1f1f1;
+  --card: #1e1e1e;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.navbar a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  padding: 40px;
+}
+
+.features, .dashboard, .ai {
+  padding: 30px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+form input, form select {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.actions button {
+  margin: 5px;
+}
+
+.report {
+  margin-top: 20px;
+  background: var(--card);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.chat-box {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+}

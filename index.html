@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HealthCompass AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <h1>HealthCompass AI</h1>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#features">Features</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#ai">AI Assistant</a>
+  </nav>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+</header>
+
+<section id="home" class="hero">
+  <h2>Your AI-Driven Personal Health Companion</h2>
+  <p>Track daily habits, analyze health, and get AI guidance.</p>
+  <button onclick="scrollToDashboard()">Start Health Check</button>
+</section>
+
+<section id="features" class="features">
+  <h2>Features</h2>
+  <div class="feature-grid">
+    <div class="card">📊 Smart Health Dashboard</div>
+    <div class="card">🤖 Real AI Health Assistant</div>
+    <div class="card">📈 Weekly Health Trends</div>
+    <div class="card">🎙️ Voice Assistant</div>
+    <div class="card">🌓 Dark / Light Mode</div>
+    <div class="card">📄 PDF Health Report</div>
+  </div>
+</section>
+
+<section id="dashboard" class="dashboard">
+  <h2>Health Dashboard</h2>
+
+  <form id="healthForm">
+    <input type="number" id="steps" placeholder="Steps per day" required>
+    <input type="number" id="sleep" placeholder="Sleep hours" required>
+    <input type="number" id="water" placeholder="Water intake (liters)" required>
+    <select id="mood">
+      <option value="Good">😊 Good</option>
+      <option value="Average">😐 Average</option>
+      <option value="Low">😞 Low</option>
+    </select>
+    <button type="submit">Generate Health Report</button>
+  </form>
+
+  <div class="actions">
+    <button onclick="downloadPDF()">Download PDF</button>
+    <button onclick="saveDailyData()">Save Today</button>
+    <button onclick="showTrends()">View Weekly Trend</button>
+  </div>
+
+  <div id="report" class="report"></div>
+  <canvas id="healthChart" width="320" height="200"></canvas>
+</section>
+
+<section id="ai" class="ai">
+  <h2>AI Health Assistant</h2>
+  <input type="password" id="apiKey" placeholder="Enter OpenAI API Key">
+  <div class="chat-box">
+    <div id="chat"></div>
+    <input type="text" id="userQuestion" placeholder="Ask about your health">
+    <button onclick="askAI()">Ask AI</button>
+    <button onclick="startVoice()">🎙️ Speak</button>
+  </div>
+  <p class="disclaimer">⚠️ Informational only. Not medical advice.</p>
+</section>
+
+<footer>
+  <p>© 2026 HealthCompass AI | Hackathon Project</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
