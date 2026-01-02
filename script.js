@@ -1,135 +1,63 @@
-let userData = {};
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-  }
-});
-
-function toggleTheme() {
+// ------------------- Dark/Light Mode -------------------
+const themeToggle = document.getElementById("themeToggle");
+themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark") ? "dark" : "light"
-  );
-}
-
-function scrollToDashboard() {
-  document.getElementById("dashboard").scrollIntoView({ behavior: "smooth" });
-}
-
-document.getElementById("healthForm").addEventListener("submit", e => {
-  e.preventDefault();
-
-  userData = {
-    steps: +steps.value,
-    sleep: +sleep.value,
-    water: +water.value,
-    mood: mood.value
-  };
-
-  generateReport(userData);
 });
 
-function generateReport(data) {
-  let status = "Average Health 🟡";
-  let reasons = [];
+// ------------------- Health Report -------------------
+function generateReport() {
+  const steps = Number(document.getElementById("steps").value);
+  const sleep = Number(document.getElementById("sleep").value);
+  const water = Number(document.getElementById("water").value);
+  const report = document.getElementById("report");
 
-  if (data.steps >= 8000 && data.sleep >= 7 && data.sleep <= 9 && data.water >= 2.5 && data.mood === "Good") {
-    status = "Good Health 🟢";
-    reasons = ["Active lifestyle", "Good sleep", "Proper hydration", "Positive mood"];
-  } else if (data.steps < 4000 || data.sleep < 6 || data.water < 1.5) {
-    status = "Low Health 🔴";
-    if (data.steps < 4000) reasons.push("Low steps");
-    if (data.sleep < 6) reasons.push("Poor sleep");
-    if (data.water < 1.5) reasons.push("Low hydration");
-  } else {
-    reasons = ["Moderate activity", "Needs improvement"];
+  let health = "Average Health";
+
+  if (steps >= 8000 && sleep >= 7 && sleep <= 9 && water >= 2.5) {
+    health = "Health is Good";
+  } else if (steps < 4000 || sleep < 6 || water < 1.5) {
+    health = "Low Health";
   }
 
-  report.innerHTML = `
-    <h3>Your Health Report</h3>
-    <p>Steps: ${data.steps}</p>
-    <p>Sleep: ${data.sleep} hrs</p>
-    <p>Water: ${data.water} L</p>
-    <p>Mood: ${data.mood}</p>
-    <h2>${status}</h2>
-    <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
-  `;
-
-  drawChart(data);
+  report.textContent = `Your health status: ${health}`;
 }
 
-function drawChart(data) {
-  const c = document.getElementById("healthChart");
-  const ctx = c.getContext("2d");
-  ctx.clearRect(0,0,c.width,c.height);
-
-  const vals = [data.steps/100, data.sleep*15, data.water*30];
-  const labels = ["Steps","Sleep","Water"];
-
-  vals.forEach((v,i)=>{
-    ctx.fillStyle="#0a6cf1";
-    ctx.fillRect(60+i*80,180-v,40,v);
-    ctx.fillStyle="#000";
-    ctx.fillText(labels[i],60+i*80,195);
-  });
-}
-
-function saveDailyData() {
-  let history = JSON.parse(localStorage.getItem("healthHistory")) || [];
-  history.push({ date: new Date().toLocaleDateString(), ...userData });
-  localStorage.setItem("healthHistory", JSON.stringify(history));
-  alert("Saved!");
-}
-
-function showTrends() {
-  let history = JSON.parse(localStorage.getItem("healthHistory")) || [];
-  if (!history.length) return alert("No data");
-
-  report.innerHTML += "<h3>Weekly Trend</h3>" +
-    history.slice(-7).map(h =>
-      `<p>${h.date}: Steps ${h.steps}, Sleep ${h.sleep}, Water ${h.water}</p>`
-    ).join("");
-}
-
-function downloadPDF() {
-  if (!report.innerHTML) return alert("Generate report first");
-  const w = window.open("");
-  w.document.write(`<h1>Health Report</h1>${report.innerHTML}`);
-  w.print();
-}
-
+// ------------------- AI Assistant -------------------
 async function askAI() {
-  const q = userQuestion.value;
-  const key = apiKey.value;
-  if (!q || !key) return alert("Enter question and API key");
+  const question = document.getElementById("userQuestion").value.trim();
+  const chat = document.getElementById("chat");
 
-  chat.innerHTML += `<p><b>You:</b> ${q}</p>`;
+  if (!question) {
+    alert("Please ask a question");
+    return;
+  }
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":`Bearer ${key}`
-    },
-    body:JSON.stringify({
-      model:"gpt-3.5-turbo",
-      messages:[{role:"user",content:q}]
-    })
-  });
+  chat.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
 
-  const data = await res.json();
-  chat.innerHTML += `<p><b>AI:</b> ${data.choices[0].message.content}</p>`;
-  userQuestion.value="";
+  try {
+    const response = await fetch("/.netlify/functions/askAI", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question })
+    });
+
+    const data = await response.json();
+
+    chat.innerHTML += `<p><strong>AI:</strong> ${data.answer}</p>`;
+    speakText(data.answer);
+
+  } catch (err) {
+    chat.innerHTML += `<p><strong>AI:</strong> Unable to get information at this time.</p>`;
+  }
+
+  document.getElementById("userQuestion").value = "";
 }
 
-function startVoice() {
-  if (!("webkitSpeechRecognition" in window)) return alert("Not supported");
-  const r = new webkitSpeechRecognition();
-  r.lang="en-US";
-  r.start();
-  r.onresult=e=>{
-    userQuestion.value=e.results[0][0].transcript;
-    askAI();
-  };
+// ------------------- Text-to-Speech -------------------
+function speakText(text) {
+  if (!("speechSynthesis" in window)) return;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
 }
