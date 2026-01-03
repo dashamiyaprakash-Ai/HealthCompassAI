@@ -37,3 +37,4 @@ body { background: var(--tech-black); color: var(--tech-text); font-family: 'Int
 .red-glow:hover { border-color: #ef4444; color: #ef4444; box-shadow: 0 0 10px #ef4444; }
 
 @media (max-width: 800px) { .tech-grid, .tech-result { grid-template-columns: 1fr; } }
+
