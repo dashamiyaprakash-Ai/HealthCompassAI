@@ -1,55 +1,76 @@
 let userData = {};
 
-// Startup
 document.addEventListener("DOMContentLoaded", () => {
+    initGoogleLogin();
     updateStreakDisplay();
-    if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
 });
 
-function toggleTheme() {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+// GOOGLE AUTH
+function initGoogleLogin() {
+    google.accounts.id.initialize({
+        client_id: "YOUR_CLIENT_ID_HERE.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "outline", size: "large" });
 }
 
-function scrollToDashboard() {
-    document.getElementById("dashboard").scrollIntoView({ behavior: "smooth" });
+function handleCredentialResponse(response) {
+    const data = parseJwt(response.credential);
+    document.getElementById("loginOverlay").style.display = "none";
+    const profile = document.getElementById("userProfile");
+    profile.style.display = "flex";
+    profile.innerHTML = `<img src="${data.picture}" style="width:25px; border-radius:50%;"> <span>${data.given_name}</span>`;
 }
 
-// Data Processing
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(window.atob(base64));
+}
+
+// ANALYSIS LOGIC
 document.getElementById("healthForm").addEventListener("submit", (e) => {
     e.preventDefault();
+    
+    // Trigger Diagnostic Animation
+    document.getElementById("ai-insights").style.display = "none";
+    document.getElementById("diagnosticLoader").style.display = "block";
+    
     userData = {
         steps: +document.getElementById("steps").value,
         sleep: +document.getElementById("sleep").value,
         water: +document.getElementById("water").value,
         mood: document.getElementById("mood").value
     };
-    generateReport(userData);
+
+    setTimeout(() => {
+        document.getElementById("diagnosticLoader").style.display = "none";
+        generateReport(userData);
+    }, 2000);
 });
 
 function generateReport(data) {
     document.getElementById("ai-insights").style.display = "grid";
-    let status = "SYSTEM: BALANCED 🟡";
+    let status = "STATUS: BALANCED 🟡";
     let videoId = "hBEKGBLAB80"; // Ali Abdaal - 8 Hacks
-    let advice = "Analyzing biometric data... Optimizing with Ali Abdaal's protocol.";
+    let advice = "System requires optimization. Loading Ali Abdaal protocol.";
 
-    if (data.steps >= 8000 && data.sleep >= 7 && data.water >= 2.5) {
-        status = "SYSTEM: OPTIMIZED 🟢";
-        videoId = "mTMfiv-zeuE";
-        advice = "Peak performance detected. Logic: Maintain current cadence.";
+    if (data.steps >= 8000 && data.sleep >= 7 && data.water >= 2.5 && data.mood === "Good") {
+        status = "STATUS: OPTIMIZED 🟢";
+        videoId = "mTMfiv-zeuE"; // Yoga/Wellness video for Good Health
+        advice = "Peak performance confirmed. Executing recovery logic.";
     }
 
     document.getElementById("report").innerHTML = `
         <h3 style="color:var(--tech-blue)">${status}</h3>
-        <p>> STEPS: ${data.steps}</p>
-        <p>> SLEEP: ${data.sleep}h</p>
-        <p>> WATER: ${data.water}L</p>
+        <p>> BIOMETRIC_STEPS: ${data.steps}</p>
+        <p>> REST_CYCLES: ${data.sleep}h</p>
+        <p>> HYDRATION: ${data.water}L</p>
     `;
     
     document.getElementById("adviceContent").innerText = advice;
     document.getElementById("videoContainer").innerHTML = `
-        <iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" 
-        frameborder="0" allowfullscreen></iframe>`;
+        <iframe width="100%" height="215" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
 
     updateUI(data);
 }
@@ -60,29 +81,25 @@ function updateUI(data) {
     
     const score = Math.round((Math.min(data.steps/10000,1)*40) + (Math.min(data.sleep/8,1)*30) + (Math.min(data.water/3,1)*30));
     document.getElementById("userScoreBar").style.width = score + "%";
-    document.getElementById("globalRank").innerText = score > 80 ? "#125 (Top 5% Network)" : "#12,890 (Top 40%)";
+    document.getElementById("globalRank").innerText = score > 80 ? "#125 (Top 5%)" : "#12,890 (Top 40%)";
 }
 
-// Challenges & Streaks
+// SHARED FUNCTIONS
 function generateChallenge() {
-    const tasks = ["DO 20 SQUATS", "DRINK 500ML WATER", "DEEP BREATHING 2MIN"];
+    const tasks = ["20 PUSHUPS", "DRINK 1L WATER", "10MIN WALK"];
     document.getElementById("challengeText").innerText = tasks[Math.floor(Math.random()*tasks.length)];
     document.getElementById("challengeDisplay").style.display = "block";
 }
 
 function shareChallenge() {
-    const msg = `Protocol: ${document.getElementById("challengeText").innerText}. Join HealthCompass AI!`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+    window.open(`https://wa.me/?text=I'm optimizing with HealthCompass AI! Challenge: ${document.getElementById("challengeText").innerText}`);
 }
 
 function saveDailyData() {
-    const today = new Date().toLocaleDateString();
-    let streak = parseInt(localStorage.getItem("healthStreak")) || 0;
-    streak++;
+    let streak = (parseInt(localStorage.getItem("healthStreak")) || 0) + 1;
     localStorage.setItem("healthStreak", streak);
-    localStorage.setItem("lastEntryDate", today);
     updateStreakDisplay();
-    alert("System Synced. Streak Logged! 🔥");
+    alert("Data Synced! 🔥");
 }
 
 function updateStreakDisplay() {
@@ -91,6 +108,9 @@ function updateStreakDisplay() {
 
 function exportToDoctor() {
     const w = window.open();
-    w.document.write(`<h1>HealthCompass System Log</h1><hr>${document.getElementById("report").innerHTML}`);
+    w.document.write(`<h1>HealthCompass Log</h1><hr>${document.getElementById("report").innerHTML}`);
     w.print();
 }
+
+function toggleTheme() { document.body.classList.toggle("dark"); }
+function scrollToDashboard() { document.getElementById("dashboard").scrollIntoView({ behavior: "smooth" }); }
