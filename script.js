@@ -1,137 +1,215 @@
+/**
+ * HealthCompass AI - Core Engine
+ * 2026 Hackathon Edition
+ */
+
 let userData = {};
 
+// Initialize application on DOM load
 document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark");
-  }
+    // Restore theme preference
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+    }
+    
+    // Initial display updates
+    updateStreakDisplay();
+    setupSmartReminders();
 });
 
+/**
+ * Theme Management
+ */
 function toggleTheme() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark") ? "dark" : "light"
-  );
+    document.body.classList.toggle("dark");
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
 }
 
 function scrollToDashboard() {
-  document.getElementById("dashboard").scrollIntoView({ behavior: "smooth" });
+    document.getElementById("dashboard").scrollIntoView({ behavior: "smooth" });
 }
 
-document.getElementById("healthForm").addEventListener("submit", e => {
-  e.preventDefault();
+/**
+ * Health Report Generation & Logic
+ */
+document.getElementById("healthForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    // Capture user inputs
+    userData = {
+        steps: +document.getElementById("steps").value,
+        sleep: +document.getElementById("sleep").value,
+        water: +document.getElementById("water").value,
+        mood: document.getElementById("mood").value
+    };
 
-  userData = {
-    steps: +steps.value,
-    sleep: +sleep.value,
-    water: +water.value,
-    mood: mood.value
-  };
-
-  generateReport(userData);
+    generateReport(userData);
 });
 
 function generateReport(data) {
-  let status = "Average Health 🟡";
-  let reasons = [];
+    const reportContainer = document.getElementById("reportContainer");
+    reportContainer.style.display = "grid";
 
-  if (data.steps >= 8000 && data.sleep >= 7 && data.sleep <= 9 && data.water >= 2.5 && data.mood === "Good") {
-    status = "Good Health 🟢";
-    reasons = ["Active lifestyle", "Good sleep", "Proper hydration", "Positive mood"];
-  } else if (data.steps < 4000 || data.sleep < 6 || data.water < 1.5) {
-    status = "Low Health 🔴";
-    if (data.steps < 4000) reasons.push("Low steps");
-    if (data.sleep < 6) reasons.push("Poor sleep");
-    if (data.water < 1.5) reasons.push("Low hydration");
-  } else {
-    reasons = ["Moderate activity", "Needs improvement"];
-  }
+    let status = "System Status: Balanced 🟡";
+    let videoId = "hBEKGBLAB80"; // Requested: Ali Abdaal - 8 Simple Hacks to Improve Your Health
+    let advice = "Vitals are within nominal range. Executing Ali Abdaal's 8-hack optimization protocol.";
 
-  report.innerHTML = `
-    <h3>Your Health Report</h3>
-    <p>Steps: ${data.steps}</p>
-    <p>Sleep: ${data.sleep} hrs</p>
-    <p>Water: ${data.water} L</p>
-    <p>Mood: ${data.mood}</p>
-    <h2>${status}</h2>
-    <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
-  `;
+    // Logic for Excellent Health Status
+    if (data.steps >= 8000 && data.sleep >= 7 && data.water >= 2.5 && data.mood === "Good") {
+        status = "System Status: Optimized 🟢";
+        videoId = "mTMfiv-zeuE"; // High-performance content
+        advice = "Peak performance detected. Core metrics exceed global averages.";
+    } 
+    // Logic for Low Health Status
+    else if (data.steps < 4000 || data.sleep < 6 || data.water < 1.5) {
+        status = "System Status: Critical 🔴";
+        advice = "Low power detected. Immediate intervention required using optimization hacks.";
+    }
 
-  drawChart(data);
+    // Update UI elements
+    document.getElementById("report").innerHTML = `
+        <h3 class="terminal-text">${status}</h3>
+        <p>> STEPS_COUNT: ${data.steps}</p>
+        <p>> SLEEP_CYCLES: ${data.sleep}h</p>
+        <p>> HYDRATION_LEVEL: ${data.water}L</p>
+        <p>> EMOTIONAL_SYNC: ${data.mood}</p>
+    `;
+
+    document.getElementById("adviceContent").innerText = advice;
+    
+    // Inject Video Feed
+    document.getElementById("videoContainer").innerHTML = `
+        <iframe width="100%" height="215" 
+            src="https://www.youtube.com/embed/${videoId}" 
+            title="Health Optimization Feed" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    `;
+
+    updateProgress(data);
+    calculateGlobalStanding(data);
 }
 
-function drawChart(data) {
-  const c = document.getElementById("healthChart");
-  const ctx = c.getContext("2d");
-  ctx.clearRect(0,0,c.width,c.height);
+/**
+ * Progress & Leaderboard Algorithms
+ */
+function updateProgress(data) {
+    // Calculate percentages based on standard tech goals
+    const stepGoal = 10000;
+    const waterGoal = 3.0;
 
-  const vals = [data.steps/100, data.sleep*15, data.water*30];
-  const labels = ["Steps","Sleep","Water"];
+    const stepPerc = Math.min((data.steps / stepGoal) * 100, 100);
+    const waterPerc = Math.min((data.water / waterGoal) * 100, 100);
 
-  vals.forEach((v,i)=>{
-    ctx.fillStyle="#0a6cf1";
-    ctx.fillRect(60+i*80,180-v,40,v);
-    ctx.fillStyle="#000";
-    ctx.fillText(labels[i],60+i*80,195);
-  });
+    document.getElementById("barSteps").style.width = stepPerc + "%";
+    document.getElementById("barWater").style.width = waterPerc + "%";
 }
 
+function calculateGlobalStanding(data) {
+    // Weighted health score calculation (Max 100)
+    const stepPoints = Math.min((data.steps / 10000) * 40, 40);
+    const sleepPoints = Math.min((data.sleep / 8) * 30, 30);
+    const waterPoints = Math.min((data.water / 3) * 30, 30);
+    const totalScore = Math.round(stepPoints + sleepPoints + waterPoints);
+
+    const rankElement = document.getElementById("globalRank");
+    const scoreBar = document.getElementById("userScoreBar");
+
+    scoreBar.style.width = totalScore + "%";
+
+    if (totalScore >= 85) {
+        rankElement.innerText = "#125 (Top 5% Network)";
+    } else if (totalScore >= 60) {
+        rankElement.innerText = "#12,890 (Top 40% Network)";
+    } else {
+        rankElement.innerText = "#45,210 (Global Tier 3)";
+    }
+}
+
+/**
+ * Gamification: Streaks & Challenges
+ */
 function saveDailyData() {
-  let history = JSON.parse(localStorage.getItem("healthHistory")) || [];
-  history.push({ date: new Date().toLocaleDateString(), ...userData });
-  localStorage.setItem("healthHistory", JSON.stringify(history));
-  alert("Saved!");
+    const today = new Date().toLocaleDateString();
+    const lastDate = localStorage.getItem("lastEntryDate");
+    let streak = parseInt(localStorage.getItem("healthStreak")) || 0;
+
+    // Check if consecutive day
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (lastDate === yesterday.toLocaleDateString()) {
+        streak++;
+    } else if (lastDate !== today) {
+        streak = 1;
+    }
+
+    localStorage.setItem("healthStreak", streak);
+    localStorage.setItem("lastEntryDate", today);
+    
+    updateStreakDisplay();
+    showToast("System Synced. Streak validated. 🔥");
 }
 
-function showTrends() {
-  let history = JSON.parse(localStorage.getItem("healthHistory")) || [];
-  if (!history.length) return alert("No data");
-
-  report.innerHTML += "<h3>Weekly Trend</h3>" +
-    history.slice(-7).map(h =>
-      `<p>${h.date}: Steps ${h.steps}, Sleep ${h.sleep}, Water ${h.water}</p>`
-    ).join("");
+function updateStreakDisplay() {
+    const streak = localStorage.getItem("healthStreak") || 0;
+    document.getElementById("streakCount").innerText = streak;
 }
 
-function downloadPDF() {
-  if (!report.innerHTML) return alert("Generate report first");
-  const w = window.open("");
-  w.document.write(`<h1>Health Report</h1>${report.innerHTML}`);
-  w.print();
+function generateChallenge() {
+    const challenges = [
+        "EXECUTE: 20 air squats in current location.",
+        "INITIATE: Hydration intake (500ml).",
+        "SYNC: 2 minutes of focused breathing.",
+        "MOBILE: 10-minute movement interval."
+    ];
+    
+    const task = challenges[Math.floor(Math.random() * challenges.length)];
+    document.getElementById("challengeText").innerText = task;
+    document.getElementById("challengeDisplay").style.display = "block";
 }
 
-async function askAI() {
-  const q = userQuestion.value;
-  const key = apiKey.value;
-  if (!q || !key) return alert("Enter question and API key");
-
-  chat.innerHTML += `<p><b>You:</b> ${q}</p>`;
-
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":`Bearer ${key}`
-    },
-    body:JSON.stringify({
-      model:"gpt-3.5-turbo",
-      messages:[{role:"user",content:q}]
-    })
-  });
-
-  const data = await res.json();
-  chat.innerHTML += `<p><b>AI:</b> ${data.choices[0].message.content}</p>`;
-  userQuestion.value="";
+function shareChallenge() {
+    const challenge = document.getElementById("challengeText").innerText;
+    const shareMsg = `HealthCompass AI Protocol: ${challenge} Join the network!`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`);
 }
 
-function startVoice() {
-  if (!("webkitSpeechRecognition" in window)) return alert("Not supported");
-  const r = new webkitSpeechRecognition();
-  r.lang="en-US";
-  r.start();
-  r.onresult=e=>{
-    userQuestion.value=e.results[0][0].transcript;
-    askAI();
-  };
+/**
+ * System Utilities (Toasts & Reminders)
+ */
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast show";
+    toast.innerHTML = `<i class="fas fa-terminal"></i> ${message}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
 }
 
+function setupSmartReminders() {
+    // Background check for hydration every 60 seconds
+    setInterval(() => {
+        if (!userData.water || userData.water < 1.5) {
+            showToast("DATA ALERT: Hydration level below threshold.");
+        }
+    }, 60000);
+}
 
+function exportToDoctor() {
+    const w = window.open();
+    const content = document.getElementById("report").innerHTML;
+    w.document.write(`
+        <body style="font-family:sans-serif; padding:50px;">
+            <h1 style="color:#0a6cf1;">HealthCompass AI - Clinical Log</h1>
+            <p>Timestamp: ${new Date().toLocaleString()}</p>
+            <hr>
+            ${content}
+            <p style="margin-top:50px; font-size:12px; color:#666;">
+                System Status: Verified Data Log.
+            </p>
+        </body>
+    `);
+    w.print();
+}
