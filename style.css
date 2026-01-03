@@ -3,13 +3,15 @@
 }
 body { background: var(--tech-black); color: var(--tech-text); font-family: 'Inter', sans-serif; margin: 0; scroll-behavior: smooth; }
 
-/* Login */
-.login-screen { position: fixed; inset: 0; background: var(--tech-black); z-index: 3000; display: flex; align-items: center; justify-content: center; text-align: center; }
+/* Login Barrier */
+.login-screen { position: fixed; inset: 0; background: var(--tech-black); z-index: 3000; display: flex; align-items: center; justify-content: center; }
 
-/* Navbar */
+/* Nav */
 .tech-nav { display: flex; justify-content: space-between; padding: 1rem 5%; background: rgba(15, 23, 42, 0.9); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #334155; }
-.nav-link { text-decoration: none; color: #94a3b8; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; }
+.nav-link { text-decoration: none; color: #94a3b8; margin: 0 15px; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; position: relative; }
 .nav-link:hover { color: var(--tech-blue); text-shadow: 0 0 8px var(--tech-blue); }
+.nav-link::after { content:''; position:absolute; width:0; height:2px; bottom:-5px; left:0; background:var(--tech-blue); transition:0.3s; }
+.nav-link:hover::after { width:100%; }
 
 /* Logo */
 .logo-wrapper { display: flex; align-items: center; gap: 10px; }
@@ -17,24 +19,30 @@ body { background: var(--tech-black); color: var(--tech-text); font-family: 'Int
 .pulse-overlay { position: absolute; font-size: 0.7rem; color: #ff2e63; animation: pulse 1.5s infinite; top: 20%; left: 20%; }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
 
-/* Diagnostic Loader */
-.loader-container { text-align: center; padding: 40px; }
+/* Diagnostic Scanner */
+.loader-container { text-align: center; padding: 40px; margin: 20px 0; }
 .scanner { width: 100%; height: 2px; background: var(--tech-blue); box-shadow: 0 0 15px var(--tech-blue); animation: scan 2s infinite; }
 @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(100px); opacity: 0; } }
 
-/* Tech UI Components */
+/* Main UI */
 .main-container { padding: 40px 5%; }
 .tech-grid, .tech-result { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 30px; }
 .tech-card { background: var(--tech-dark); padding: 25px; border-radius: 12px; border: 1px solid #334155; }
-.sleep-field { width: 80px !important; text-align: center; border: 2px solid var(--tech-blue) !important; font-weight: bold; background: #0f172a; color: white; border-radius: 4px; }
+.sleep-field { width: 80px !important; text-align: center; border: 2px solid var(--tech-blue) !important; background: #0f172a; color: white; border-radius: 4px; }
+
+/* Progress */
 .bar-shell { background: #0f172a; height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
-.bar-core { height: 100%; transition: 1s; }
+.bar-core { height: 100%; transition: 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 .blue-glow { background: var(--tech-blue); box-shadow: 0 0 8px var(--tech-blue); }
+.user-glow { background: var(--tech-accent); box-shadow: 0 0 8px var(--tech-accent); }
+
+/* Buttons */
+.btn-primary-tech { background: var(--tech-blue); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+.btn-primary-tech:hover { box-shadow: 0 0 15px var(--tech-blue); transform: translateY(-2px); }
 
 /* Footer */
 .tech-footer { padding: 40px 5%; border-top: 1px solid #334155; text-align: center; }
-.btn-action { background: transparent; color: white; border: 1px solid #334155; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 0 10px; transition: 0.3s; }
+.btn-action { background: transparent; color: white; border: 1px solid #334155; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 5px; transition: 0.3s; }
 .red-glow:hover { border-color: #ef4444; color: #ef4444; box-shadow: 0 0 10px #ef4444; }
 
 @media (max-width: 800px) { .tech-grid, .tech-result { grid-template-columns: 1fr; } }
-
