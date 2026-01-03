@@ -6,8 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
+
+<div id="loginOverlay" class="login-screen">
+  <div class="card tech-card login-box">
+    <div class="health-logo" style="font-size: 3rem; margin-bottom: 20px;">
+      <i class="fas fa-microchip chip-icon"></i>
+      <i class="fas fa-heartbeat pulse-overlay"></i>
+    </div>
+    <h2>System Authentication</h2>
+    <p>Please sign in to sync with the HealthCompass Network.</p>
+    <div id="googleBtn"></div>
+  </div>
+</div>
 
 <header class="navbar tech-nav">
   <div class="logo-wrapper">
@@ -18,28 +31,25 @@
     <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
   </div>
   <nav>
-    <a href="#dashboard">Platform</a>
-    <a href="#ai-insights">AI Insights</a>
-    <a href="#leaderboard">Community</a>
+    <a href="#dashboard" class="nav-link">Platform</a>
+    <a href="#ai-insights" class="nav-link">AI Insights</a>
+    <a href="#leaderboard" class="nav-link">Community</a>
   </nav>
   <div class="nav-actions">
+    <div id="userProfile" class="user-pill" style="display:none;"></div>
     <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-adjust"></i></button>
-    <button class="btn-cta" onclick="scrollToDashboard()">Launch App</button>
   </div>
 </header>
 
-<section class="hero tech-hero">
-  <div class="hero-content">
-    <div class="badge">Next-Gen Health Tracking</div>
+<main class="main-container">
+  <section class="hero tech-hero">
+    <div class="badge">Biometric Analysis v2.6</div>
     <h1>Innovative Solutions for <span class="gradient-text">Personal Wellness</span></h1>
-    <p>Leverage high-tech algorithms to optimize your daily habits and long-term health trends.</p>
     <div class="streak-pill tech-streak">
         <i class="fas fa-bolt"></i> <span id="streakCount">0</span> Day Streak
     </div>
-  </div>
-</section>
+  </section>
 
-<main class="main-container">
   <div id="dashboard" class="tech-grid">
     <div class="card tech-card">
       <div class="card-header"><h3><i class="fas fa-terminal"></i> Data Entry</h3></div>
@@ -70,10 +80,15 @@
     </div>
   </div>
 
+  <div id="diagnosticLoader" class="loader-container" style="display:none;">
+    <div class="scanner"></div>
+    <p class="terminal-text">SCANNING BIOMETRICS...</p>
+  </div>
+
   <div id="ai-insights" class="tech-result" style="display:none;">
     <div class="card tech-card terminal-style"><div id="report"></div></div>
     <div class="card tech-card advice-box">
-       <h3><i class="fas fa-code-branch"></i> Logic Output</h3>
+       <h3><i class="fas fa-code-branch"></i> AI Optimization Feed</h3>
        <div id="videoContainer"></div>
        <div id="adviceContent" class="terminal-text"></div>
     </div>
@@ -83,8 +98,8 @@
     <div class="card tech-card leaderboard">
       <h3><i class="fas fa-globe"></i> Network Ranking</h3>
       <div class="network-map-container">
-        <div class="map-dots"><div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div><div class="dot d4"></div></div>
-        <p class="map-status">Syncing with Global Nodes...</p>
+        <div class="map-dots"><div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div></div>
+        <p class="map-status">Syncing Nodes...</p>
       </div>
       <span id="globalRank" class="rank-id"># SCANNING...</span>
       <div class="bar-shell"><div id="userScoreBar" class="bar-core user-glow"></div></div>
@@ -92,7 +107,7 @@
 
     <div class="card tech-card challenge">
       <h3><i class="fas fa-shield-halved"></i> Security Task</h3>
-      <p id="challengeText">Ready for a challenge?</p>
+      <p id="challengeText">System standby...</p>
       <div id="challengeDisplay" style="display:none; margin-bottom:10px;">
         <button onclick="shareChallenge()" class="btn-secondary-tech"><i class="fas fa-share-nodes"></i> Broadcast</button>
       </div>
@@ -106,7 +121,7 @@
     <button onclick="exportToDoctor()" class="btn-action red-glow"><i class="fas fa-file-pdf"></i> Export Log</button>
     <button onclick="saveDailyData()" class="btn-action blue-glow"><i class="fas fa-server"></i> Sync Cloud</button>
   </div>
-  <p class="copyright">SYSTEM STATUS: OPERATIONAL | © 2026 HealthCompass AI</p>
+  <p class="copyright">© 2026 HealthCompass AI | Operational</p>
 </footer>
 
 <script src="script.js"></script>
