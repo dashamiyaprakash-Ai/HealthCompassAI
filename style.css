@@ -1,105 +1,111 @@
 :root {
-  --bg: #f5f7fa;
-  --text: #222;
-  --card: #ffffff;
-  --primary: #0a6cf1;
-}
-
-body.dark {
-  --bg: #121212;
-  --text: #f1f1f1;
-  --card: #1e1e1e;
+  --tech-black: #0f172a;
+  --tech-dark: #1e293b;
+  --tech-blue: #38bdf8;
+  --tech-accent: #818cf8;
+  --tech-text: #f8fafc;
+  --glass: rgba(30, 41, 59, 0.7);
 }
 
 body {
+  background-color: var(--tech-black);
+  background-image: radial-gradient(circle at 2px 2px, rgba(56, 189, 248, 0.05) 1px, transparent 0);
+  background-size: 40px 40px;
+  color: var(--tech-text);
+  font-family: 'Inter', sans-serif;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s;
 }
 
-.navbar {
+/* Wix-Style Navbar */
+.tech-nav {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 1rem 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  background: var(--primary);
-  color: #fff;
 }
 
-.navbar a {
-  color: #fff;
-  margin: 0 10px;
-  text-decoration: none;
-}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+.ai-tag { color: var(--tech-blue); }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #fff;
-  cursor: pointer;
-}
+.nav-actions { display: flex; gap: 20px; align-items: center; }
 
-.hero {
+/* Hero Section */
+.tech-hero {
+  padding: 100px 5% 60px;
   text-align: center;
-  padding: 40px;
 }
 
-.features, .dashboard, .ai {
+.badge {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--tech-blue);
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, var(--tech-blue), var(--tech-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tech Cards */
+.tech-card {
+  background: var(--tech-dark);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
   padding: 30px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-}
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: var(--tech-blue); }
 
-.card {
-  background: var(--card);
-  padding: 20px;
+.tech-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 5%; }
+
+/* Inputs */
+.tech-input label { display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+.tech-input input, .tech-input select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: white;
+  padding: 12px;
   border-radius: 8px;
-  text-align: center;
-}
-
-form input, form select {
-  display: block;
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
 }
 
-button {
-  padding: 10px 15px;
-  background: var(--primary);
-  color: #fff;
+/* Buttons */
+.btn-primary-tech {
+  background: var(--tech-blue);
+  color: var(--tech-black);
   border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 800;
   cursor: pointer;
-  border-radius: 5px;
-}
-
-.actions button {
-  margin: 5px;
-}
-
-.report {
   margin-top: 20px;
-  background: var(--card);
-  padding: 15px;
-  border-radius: 8px;
+  transition: 0.3s;
 }
+.btn-primary-tech:hover { box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
 
-.chat-box {
-  background: var(--card);
-  padding: 15px;
-  border-radius: 8px;
+/* Progress Shells */
+.bar-shell { background: #0f172a; height: 8px; border-radius: 4px; margin: 10px 0; overflow: hidden; }
+.bar-core { height: 100%; width: 0; transition: 1s ease-out; }
+.blue-glow { background: var(--tech-blue); box-shadow: 0 0 10px var(--tech-blue); }
+.cyan-glow { background: #2dd4bf; box-shadow: 0 0 10px #2dd4bf; }
+
+/* Toast & Feedback */
+.toast { background: var(--tech-dark); border: 1px solid var(--tech-blue); color: white; padding: 15px; border-radius: 8px; position: fixed; bottom: 20px; right: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+
+@media (max-width: 900px) {
+  .tech-grid { grid-template-columns: 1fr; }
 }
-
-footer {
-  text-align: center;
-  padding: 10px;
-}
-
-
