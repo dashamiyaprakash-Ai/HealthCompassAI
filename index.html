@@ -2,72 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HealthCompass AI | Professional Wellness Suite</title>
+  <title>HealthCompass AI | Smart Wellness</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body>
-
-<div id="loginOverlay" class="login-screen">
+<body class="dark"> <div id="loginOverlay" class="login-screen">
   <div class="card tech-card login-box">
-    <div class="health-logo" style="font-size: 3rem; margin-bottom: 20px;">
-      <i class="fas fa-microchip chip-icon"></i>
-      <i class="fas fa-heartbeat pulse-overlay"></i>
-    </div>
+    <i class="fas fa-shield-halved fa-3x" style="color:var(--tech-blue); margin-bottom:20px;"></i>
     <h2>System Authentication</h2>
-    <p>Please sign in to sync with the HealthCompass AI Network.</p>
+    <p>Sign in to sync with the HealthCompass Network.</p>
     <div id="googleBtn"></div>
-    <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Proceed as Guest</button>
+    <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Guest Access</button>
   </div>
 </div>
 
 <header class="navbar tech-nav">
   <div class="logo-wrapper">
-    <div class="health-logo">
-      <i class="fas fa-microchip chip-icon"></i>
-      <i class="fas fa-heartbeat pulse-overlay"></i>
-    </div>
+    <i class="fas fa-compass fa-2x" style="color:var(--tech-blue)"></i>
     <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
   </div>
-  <nav>
-    <a href="#dashboard" class="nav-link">Platform</a>
-    <a href="#ai-insights" class="nav-link">AI Insights</a>
-    <a href="#leaderboard" class="nav-link">Community</a>
-  </nav>
   <div class="nav-actions">
-    <div id="userProfile" class="user-pill" style="display:none;"></div>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Visual Mode">
-      <i id="themeIcon" class="fas fa-moon"></i>
-    </button>
+    <button class="theme-toggle" onclick="toggleTheme()"><i id="themeIcon" class="fas fa-sun"></i></button>
   </div>
 </header>
 
 <main class="main-container">
-  <section class="hero tech-hero">
-    <div class="badge">Biometric Analysis v2.6.4</div>
-    <h1>Innovative Solutions for <span class="gradient-text">Personal Wellness</span></h1>
-    <div class="streak-pill tech-streak">
-        <i class="fas fa-bolt"></i> <span id="streakCount">0</span> Day Streak
-    </div>
+  <section class="hero">
+    <h1>Innovative Solutions for <span class="gradient-text">Wellness</span></h1>
+    <div class="streak-pill"><i class="fas fa-bolt"></i> <span id="streakCount">0</span> Day Streak</div>
   </section>
 
   <div id="dashboard" class="tech-grid">
     <div class="card tech-card">
-      <div class="card-header"><h3><i class="fas fa-terminal"></i> Data Entry</h3></div>
+      <h3><i class="fas fa-terminal"></i> Data Entry</h3>
       <form id="healthForm">
         <div class="input-grid">
-          <div class="tech-input input-steps"><label>Steps</label><input type="number" id="steps" placeholder="0" required></div>
-          <div class="tech-input input-sleep"><label>Sleep (H)</label><input type="number" id="sleep" class="sleep-field" placeholder="0" required></div>
-          <div class="tech-input input-water"><label>Water (L)</label><input type="number" id="water" step="0.1" placeholder="0" required></div>
+          <div class="tech-input input-steps"><label>Steps</label><input type="number" id="steps" value="0"></div>
+          <div class="tech-input input-sleep"><label>Sleep</label><input type="number" id="sleep" value="0"></div>
+          <div class="tech-input input-water"><label>Water</label><input type="number" id="water" value="0"></div>
           <div class="tech-input input-mood">
             <label>Mood</label>
-            <select id="mood">
-              <option value="Good">Optimized</option>
-              <option value="Average">Balanced</option>
-              <option value="Low">Low Power</option>
-            </select>
+            <select id="mood"><option value="Low">Low Power</option><option value="Average">Balanced</option><option value="Good">Optimized</option></select>
           </div>
         </div>
         <button type="submit" class="btn-primary-tech">Execute Analysis</button>
@@ -75,12 +52,10 @@
     </div>
 
     <div class="card tech-card">
-      <div class="card-header"><h3><i class="fas fa-layer-group"></i> Optimization Metrics</h3></div>
-      <div id="progressContainer">
-         <div class="tech-prog">Step Efficiency <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-         <div class="tech-prog">Hydration Level <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-         <div class="tech-prog">Sleep Score <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
-      </div>
+      <h3><i class="fas fa-layer-group"></i> Optimization Metrics</h3>
+      <div class="tech-prog">Step Efficiency <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
+      <div class="tech-prog">Hydration Level <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
+      <div class="tech-prog">Sleep Score <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
     </div>
   </div>
 
@@ -92,38 +67,30 @@
   <div id="ai-insights" class="tech-result" style="display:none;">
     <div class="card tech-card terminal-style"><div id="report"></div></div>
     <div class="card tech-card advice-box">
-       <h3><i class="fas fa-code-branch"></i> AI Optimization Feed</h3>
+       <h3>AI Disease Assistant</h3>
        <div id="videoContainer"></div>
        <div id="adviceContent" class="terminal-text"></div>
     </div>
   </div>
 
-  <div id="leaderboard" class="bottom-interface">
-    <div class="card tech-card leaderboard">
-      <h3><i class="fas fa-globe"></i> Network Ranking</h3>
-      <div class="network-map-container">
-        <div class="map-dots"><div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div></div>
-        <p class="map-status">Syncing Nodes...</p>
-      </div>
-      <span id="globalRank" class="rank-id"># SCANNING...</span>
+  <div id="leaderboard" class="tech-grid">
+    <div class="card tech-card">
+      <h3>Network Ranking</h3>
+      <span id="globalRank"># SCANNING...</span>
       <div class="bar-shell"><div id="userScoreBar" class="bar-core user-glow"></div></div>
     </div>
-
-    <div class="card tech-card challenge">
-      <h3><i class="fas fa-shield-halved"></i> Daily Challenge</h3>
+    <div class="card tech-card">
+      <h3>Daily Challenge</h3>
       <p id="challengeText">System standby...</p>
-      <div id="challengeDisplay" style="display:none; margin-bottom:10px;">
-        <button onclick="shareChallenge()" class="btn-secondary-tech">Broadcast</button>
-      </div>
-      <button onclick="generateChallenge()" class="btn-gold-tech">Start Task</button>
+      <button onclick="generateChallenge()" class="btn-secondary">Start Task</button>
     </div>
   </div>
 </main>
 
 <footer class="tech-footer">
-  <button onclick="exportToDoctor()" class="btn-action red-glow"><i class="fas fa-file-pdf"></i> Export Log</button>
-  <button onclick="saveDailyData()" class="btn-action blue-glow"><i class="fas fa-save"></i> Save Daily</button>
-  <p class="copyright">SYSTEM STATUS: OPERATIONAL | © 2026 HealthCompass AI</p>
+  <button onclick="exportToDoctor()" class="btn-action"><i class="fas fa-file-pdf"></i> Export Log</button>
+  <button onclick="saveDailyData()" class="btn-action"><i class="fas fa-save"></i> Save Daily</button>
+  <p>SYSTEM STATUS: OPERATIONAL | © 2026 HealthCompass AI</p>
 </footer>
 
 <script src="script.js"></script>
