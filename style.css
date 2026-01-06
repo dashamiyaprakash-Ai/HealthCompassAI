@@ -1,36 +1,29 @@
-/* 1. Global Variables - Optimized for both Themes */
+/* 1. Global Reset & Variables */
 :root {
   --bg-main: #f1f5f9;
   --bg-card: #ffffff;
   --text-main: #0f172a;
   --border: #e2e8f0;
   --tech-blue: #0ea5e9;
-  --tech-purple: #a855f7;
-  --tech-cyan: #0d9488;
-  --tech-green: #22c55e;
+  --tech-red: #ff2e63; /* For Very Much Low Output */
 }
 
-/* 2. Dark Theme Variables [cite: 12] */
 body.dark {
   --bg-main: #0f172a;
   --bg-card: #1e293b;
   --text-main: #f8fafc;
   --border: #334155;
-  --tech-blue: #38bdf8;
-  --tech-cyan: #2dd4bf;
 }
 
-/* 3. Base Styles */
+/* 2. Layout Structure */
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Inter', sans-serif;
   margin: 0;
-  transition: background-color 0.3s ease;
-  overflow-x: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: 0.3s;
 }
 
-/* 4. Navigation [cite: 12, 13] */
 .tech-nav {
   display: flex;
   justify-content: space-between;
@@ -38,112 +31,86 @@ body {
   padding: 1rem 5%;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
 }
 
-/* 5. Dashboard Grid [cite: 13, 14] */
+.main-container {
+  padding: 2rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 3. Dashboard Grid System [cite: 12, 13] */
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  padding: 2rem 5%;
+  gap: 20px;
+  margin-top: 2rem;
 }
 
 .tech-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  padding: 25px;
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-/* 6. Inputs & Forms [cite: 6, 12] */
-.input-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.tech-input label {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.tech-input input, .tech-input select {
-  width: 100%;
-  padding: 10px;
-  background: var(--bg-main);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-main);
-  box-sizing: border-box;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* 7. Optimization Metrics (Bars) [cite: 14, 15] */
+/* 4. Custom Progress Bars (Optimization Metrics)  */
 .bar-shell {
   background: rgba(0, 0, 0, 0.1);
   height: 12px;
   border-radius: 6px;
   margin: 10px 0;
   overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .bar-core {
   height: 100%;
-  width: 0%;
-  transition: width 1.5s cubic-bezier(0.1, 0, 0.1, 1);
+  width: 0%; /* Default to 0 for no rise  */
+  transition: width 1.5s ease-in-out;
 }
 
-.blue-glow { background: var(--tech-blue); box-shadow: 0 0 10px var(--tech-blue); }
-.cyan-glow { background: var(--tech-cyan); box-shadow: 0 0 10px var(--tech-cyan); }
-.purple-glow { background: var(--tech-purple); box-shadow: 0 0 10px var(--tech-purple); }
+.blue-glow { 
+  background: var(--tech-blue); 
+  box-shadow: 0 0 10px var(--tech-blue); 
+}
 
-/* 8. Diagnostic Animation & Low Power Mode [cite: 11, 15] */
-.loader-container { text-align: center; padding: 40px; }
+/* 5. Diagnostic Scanner & Reboot Mode [cite: 15] */
+.loader-container { text-align: center; padding: 30px; }
+
 .scanner {
   width: 100%;
-  height: 3px;
+  height: 4px;
   background: var(--tech-blue);
-  box-shadow: 0 0 15px var(--tech-blue);
   animation: scan 2s infinite ease-in-out;
 }
 
 @keyframes scan {
   0%, 100% { transform: translateY(0); opacity: 0.2; }
-  50% { transform: translateY(100px); opacity: 1; }
+  50% { transform: translateY(80px); opacity: 1; }
 }
 
-/* Very Low Power State Visuals [cite: 15] */
+/* System Reboot CSS (For Very Much Low) */
 .reboot-mode .scanner {
-  background: #ff2e63 !important;
-  box-shadow: 0 0 20px #ff2e63 !important;
+  background: var(--tech-red) !important;
+  box-shadow: 0 0 20px var(--tech-red) !important;
 }
 
-/* 9. Security & Login  */
+/* 6. Login Security Overlay [cite: 15] */
 .login-screen {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.98);
   z-index: 9999;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: center;
 }
 
-#googleBtn {
-  min-height: 44px;
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-/* 10. Responsive Design [cite: 21] */
+/* 7. Mobile View Optimization  */
 @media (max-width: 600px) {
-  .input-grid { grid-template-columns: 1fr; }
   .tech-grid { grid-template-columns: 1fr; }
+  .input-grid { grid-template-columns: 1fr; }
+  .navbar { flex-direction: column; gap: 10px; }
 }
