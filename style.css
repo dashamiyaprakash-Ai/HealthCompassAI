@@ -1,33 +1,149 @@
+/* 1. Global Variables - Optimized for both Themes */
 :root {
-  --bg-main: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a; --border: #e2e8f0;
-  --tech-blue: #0ea5e9; --tech-cyan: #0d9488;
+  --bg-main: #f1f5f9;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --border: #e2e8f0;
+  --tech-blue: #0ea5e9;
+  --tech-purple: #a855f7;
+  --tech-cyan: #0d9488;
+  --tech-green: #22c55e;
 }
 
+/* 2. Dark Theme Variables [cite: 12] */
 body.dark {
-  --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --border: #334155;
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --border: #334155;
+  --tech-blue: #38bdf8;
+  --tech-cyan: #2dd4bf;
 }
 
-body { background: var(--bg-main); color: var(--text-main); font-family: sans-serif; transition: 0.3s; margin: 0; }
+/* 3. Base Styles */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  transition: background-color 0.3s ease;
+  overflow-x: hidden;
+}
 
-.login-screen { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+/* 4. Navigation [cite: 12, 13] */
+.tech-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-.tech-nav { display: flex; justify-content: space-between; padding: 1rem 5%; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+/* 5. Dashboard Grid [cite: 13, 14] */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 2rem 5%;
+}
 
-.tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 2rem 5%; }
+.tech-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
 
-.tech-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+/* 6. Inputs & Forms [cite: 6, 12] */
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
 
-.bar-shell { background: rgba(0,0,0,0.2); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 5px; }
+.tech-input label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
 
-.bar-core { height: 100%; width: 0%; transition: 1.5s; }
+.tech-input input, .tech-input select {
+  width: 100%;
+  padding: 10px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-main);
+  box-sizing: border-box;
+}
+
+/* 7. Optimization Metrics (Bars) [cite: 14, 15] */
+.bar-shell {
+  background: rgba(0, 0, 0, 0.1);
+  height: 12px;
+  border-radius: 6px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.bar-core {
+  height: 100%;
+  width: 0%;
+  transition: width 1.5s cubic-bezier(0.1, 0, 0.1, 1);
+}
 
 .blue-glow { background: var(--tech-blue); box-shadow: 0 0 10px var(--tech-blue); }
+.cyan-glow { background: var(--tech-cyan); box-shadow: 0 0 10px var(--tech-cyan); }
+.purple-glow { background: var(--tech-purple); box-shadow: 0 0 10px var(--tech-purple); }
 
+/* 8. Diagnostic Animation & Low Power Mode [cite: 11, 15] */
 .loader-container { text-align: center; padding: 40px; }
+.scanner {
+  width: 100%;
+  height: 3px;
+  background: var(--tech-blue);
+  box-shadow: 0 0 15px var(--tech-blue);
+  animation: scan 2s infinite ease-in-out;
+}
 
-.scanner { width: 100%; height: 3px; background: var(--tech-blue); animation: scan 2s infinite; }
+@keyframes scan {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(100px); opacity: 1; }
+}
 
-@keyframes scan { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(100px); } }
+/* Very Low Power State Visuals [cite: 15] */
+.reboot-mode .scanner {
+  background: #ff2e63 !important;
+  box-shadow: 0 0 20px #ff2e63 !important;
+}
 
-/* Critical Power Mode Styling */
-.reboot-mode .scanner { background: #ff2e63; box-shadow: 0 0 15px #ff2e63; }
+/* 9. Security & Login  */
+.login-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#googleBtn {
+  min-height: 44px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* 10. Responsive Design [cite: 21] */
+@media (max-width: 600px) {
+  .input-grid { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+}
