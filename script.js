@@ -23,8 +23,6 @@ function runAnalysis(data) {
     const loader = document.getElementById("diagnosticLoader");
     const insights = document.getElementById("ai-insights");
     const score = (Math.min(data.steps/10000, 1) * 40) + (Math.min(data.sleep/8, 1) * 30) + (Math.min(data.water/3, 1) * 30);
-    
-    // Critical Logic: All low or balanced imbalance
     const isCritical = (data.steps === 0 && data.sleep === 0 && data.water === 0) || score < 15;
 
     insights.style.display = "none";
@@ -53,7 +51,6 @@ function runAnalysis(data) {
         document.getElementById("barWater").style.width = data.water === 0 ? "0%" : (Math.min(data.water/3*100, 100) + "%");
         document.getElementById("barSleep").style.width = data.sleep === 0 ? "0%" : (Math.min(data.sleep/8*100, 100) + "%");
         
-        // Network Ranking Module Update
         document.getElementById("userScoreBar").style.width = isCritical ? "5%" : score + "%";
         document.getElementById("globalRank").innerText = isCritical ? "RANK: UNVERIFIED" : (score > 80 ? "#125 (Top 5%)" : "#12,890 (Top 40%)");
     }, 2000);
