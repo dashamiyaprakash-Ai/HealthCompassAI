@@ -1,127 +1,68 @@
-// Global State
-let healthData = { steps: 0, sleep: 0, water: 0, mood: 'Low' };
-
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Safe Google Auth Initialization
     if (window.google) {
         google.accounts.id.initialize({
-            client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
-            callback: (response) => {
-                document.getElementById('loginOverlay').style.display = 'none';
-            }
+            client_id: "75394226156-6gq6kjk...apps.googleusercontent.com", 
+            callback: (res) => { document.getElementById('loginOverlay').style.display='none'; }
         });
-        google.accounts.id.renderButton(
-            document.getElementById("googleBtn"), 
-            { theme: "outline", size: "large", width: "100%" }
-        );
+        google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "outline", size: "large" });
     }
-    updateStreakDisplay();
 });
 
-// 2. Theme Toggle with Icon Fix
-function toggleTheme() {
-    const body = document.body;
-    const icon = document.getElementById("themeIcon");
-    body.classList.toggle("dark");
-    if (body.classList.contains("dark")) {
-        icon.className = "fas fa-sun";
-    } else {
-        icon.className = "fas fa-moon";
-    }
-}
-
-// 3. Main Analysis Logic
 document.getElementById("healthForm").addEventListener("submit", (e) => {
     e.preventDefault();
-    
-    // Capture Inputs [cite: 13, 14]
-    healthData.steps = parseInt(document.getElementById("steps").value) || 0;
-    healthData.sleep = parseInt(document.getElementById("sleep").value) || 0;
-    healthData.water = parseFloat(document.getElementById("water").value) || 0;
-    healthData.mood = document.getElementById("mood").value;
-
-    executeDiagnostic();
+    const data = {
+        steps: +document.getElementById("steps").value || 0,
+        sleep: +document.getElementById("sleep").value || 0,
+        water: +document.getElementById("water").value || 0,
+        mood: document.getElementById("mood").value
+    };
+    runAnalysis(data);
 });
 
-function executeDiagnostic() {
+function runAnalysis(data) {
     const loader = document.getElementById("diagnosticLoader");
     const insights = document.getElementById("ai-insights");
+    const score = (Math.min(data.steps/10000, 1) * 40) + (Math.min(data.sleep/8, 1) * 30) + (Math.min(data.water/3, 1) * 30);
     
-    // Calculate Score (Weightage: Steps 40%, Sleep 30%, Water 30%)
-    const score = (Math.min(healthData.steps/10000, 1) * 40) + 
-                  (Math.min(healthData.sleep/8, 1) * 30) + 
-                  (Math.min(healthData.water/3, 1) * 30);
+    // Critical Logic: All low or balanced imbalance
+    const isCritical = (data.steps === 0 && data.sleep === 0 && data.water === 0) || score < 15;
 
-    // WINNING LOGIC: Identify "Very Much Low" or Critical Imbalance
-    const isCritical = (healthData.steps === 0 && healthData.sleep === 0 && healthData.water === 0) || (score < 15);
-
-    // UI State Management 
     insights.style.display = "none";
     loader.style.display = "block";
-    
-    if (isCritical) {
-        loader.classList.add("reboot-mode");
-        loader.querySelector(".terminal-text").innerText = "SYSTEM CRITICAL: REBOOTING...";
-    } else {
-        loader.classList.remove("reboot-mode");
-        loader.querySelector(".terminal-text").innerText = "SCANNING BIOMETRICS...";
-    }
+    if (isCritical) loader.classList.add("reboot-mode");
+    else loader.classList.remove("reboot-mode");
 
     setTimeout(() => {
         loader.style.display = "none";
         insights.style.display = "grid";
-        displayResults(score, isCritical);
-    }, 2500);
+        
+        let status = isCritical ? "STATUS: VERY MUCH LOW 🔴" : "STATUS: BALANCED 🟡";
+        let videoId = isCritical ? "6_vOInS_A8c" : "hBEKGBLAB80";
+        if (score > 80 && !isCritical) { status = "STATUS: OPTIMIZED 🟢"; videoId = "mTMfiv-zeuE"; }
+
+        document.getElementById("report").innerHTML = `
+            <h3 style="color:${isCritical ? '#ff2e63' : '#0ea5e9'}">${status}</h3>
+            <p>> STEPS: ${data.steps}</p>
+            <p>> SLEEP: ${data.sleep}h</p>
+            <p>> WATER: ${data.water}L</p>`;
+        
+        document.getElementById("videoContainer").innerHTML = `<iframe width="100%" height="215" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+        
+        // FIX: No rise in bars if value is zero
+        document.getElementById("barSteps").style.width = data.steps === 0 ? "0%" : (Math.min(data.steps/100, 100) + "%");
+        document.getElementById("barWater").style.width = data.water === 0 ? "0%" : (Math.min(data.water/3*100, 100) + "%");
+        document.getElementById("barSleep").style.width = data.sleep === 0 ? "0%" : (Math.min(data.sleep/8*100, 100) + "%");
+        
+        // Network Ranking Module Update
+        document.getElementById("userScoreBar").style.width = isCritical ? "5%" : score + "%";
+        document.getElementById("globalRank").innerText = isCritical ? "RANK: UNVERIFIED" : (score > 80 ? "#125 (Top 5%)" : "#12,890 (Top 40%)");
+    }, 2000);
 }
 
-function displayResults(score, isCritical) {
-    const report = document.getElementById("report");
-    const video = document.getElementById("videoContainer");
-    const advice = document.getElementById("adviceContent");
-
-    // Dynamic Content Based on Score [cite: 10, 11]
-    let status = "STATUS: BALANCED 🟡";
-    let videoId = "hBEKGBLAB80"; // General hacks
-    let adviceText = "System operational. Minor hydration adjustments suggested.";
-
-    if (isCritical) {
-        status = "STATUS: VERY MUCH LOW 🔴";
-        videoId = "6_vOInS_A8c"; // Survival/Rest protocol
-        adviceText = "CRITICAL FAILURE: No movement or hydration detected. System stagnation imminent.";
-    } else if (score > 80 && healthData.mood === "Good") {
-        status = "STATUS: OPTIMIZED 🟢";
-        videoId = "mTMfiv-zeuE"; // High performance protocol
-        adviceText = "Peak performance achieved. Sustainability logic active.";
-    }
-
-    // Update Report UI [cite: 10]
-    report.innerHTML = `
-        <h3 style="color:${isCritical ? '#ff2e63' : 'var(--tech-blue)'}">${status}</h3>
-        <p>> DATA_SYNC: SUCCESS</p>
-        <p>> OPTIMIZATION_SCORE: ${Math.round(score)}%</p>
-    `;
-
-    advice.innerText = adviceText;
-    video.innerHTML = `<iframe width="100%" height="215" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-
-    // Progress Bar Animation (No rise if zero) 
-    document.getElementById("barSteps").style.width = (isCritical || healthData.steps === 0) ? "2%" : `${(healthData.steps/10000)*100}%`;
-    document.getElementById("barWater").style.width = (isCritical || healthData.water === 0) ? "2%" : `${(healthData.water/3)*100}%`;
-    document.getElementById("userScoreBar").style.width = `${Math.max(score, 5)}%`;
-}
-
-function generateChallenge() {
-    const tasks = ["Drink 1L Water", "20 Pushups", "10 Min Meditation"];
+function exportToPDF() { window.print(); }
+function generateChallenge() { 
+    const tasks = ["Drink 500ml Water", "5 Minute Stretch", "10 Pushups"];
     document.getElementById("challengeText").innerText = tasks[Math.floor(Math.random()*tasks.length)];
 }
-
-function saveDailyData() {
-    let streak = parseInt(localStorage.getItem("healthStreak") || 0) + 1;
-    localStorage.setItem("healthStreak", streak);
-    updateStreakDisplay();
-    alert("Biometric Data Synced to Cloud! 🔥");
-}
-
-function updateStreakDisplay() {
-    document.getElementById("streakCount").innerText = localStorage.getItem("healthStreak") || 0;
-}
+function saveDailyData() { alert("Data Synced Safely!"); }
+function toggleTheme() { document.body.classList.toggle("dark"); }
