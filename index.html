@@ -1,76 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>HealthCompass AI | AI-Driven Health Companion</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta charset="UTF-8">
+    <title>HealthCompass AI | Team BioLogic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="dark">
 
 <div id="loginOverlay" class="login-screen">
-  <div class="card tech-card login-box">
-    <h2>System Authentication</h2>
-    <p>Sign in to sync with the HealthCompass Network.</p>
-    <div id="googleBtn"></div>
-    <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Guest Access</button>
-  </div>
+    <div class="card tech-card login-box">
+        <h2>Identity Security</h2>
+        <p>Authentication required for health report generation.</p>
+        <div id="googleBtn"></div>
+        <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Skip for now</button>
+    </div>
 </div>
 
 <header class="navbar tech-nav">
-  <div class="logo-wrapper">
-    <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
-  </div>
-  <nav>
-    <a href="#dashboard" class="nav-link">Dashboard</a>
-    <a href="#ai-insights" class="nav-link">AI Assistant</a>
-    <a href="#leaderboard" class="nav-link">Network Ranking</a>
-  </nav>
-  <div class="nav-actions">
-    <button class="theme-toggle" onclick="toggleTheme()"><i id="themeIcon" class="fas fa-sun"></i></button>
-  </div>
+    <div class="logo-wrapper">
+        <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
+    </div>
+    <div class="nav-actions">
+        <button class="theme-toggle" onclick="toggleTheme()"><i id="themeIcon" class="fas fa-sun"></i></button>
+    </div>
 </header>
 
 <main class="main-container">
-  <section id="dashboard" class="tech-grid">
-    <div class="card tech-card">
-      <h3>Data Entry</h3>
-      <form id="healthForm">
-        <div class="input-grid">
-          <div class="tech-input"><label>Steps</label><input type="number" id="steps" value="0"></div>
-          <div class="tech-input"><label>Sleep</label><input type="number" id="sleep" value="0"></div>
-          <div class="tech-input"><label>Water</label><input type="number" id="water" value="0"></div>
-          <div class="tech-input">
-            <label>Mood</label>
-            <select id="mood"><option value="Low">Low Power</option><option value="Good">Optimized</option></select>
-          </div>
+    <section id="dashboard" class="tech-grid">
+        <div class="card tech-card">
+            <h3><i class="fas fa-terminal"></i> Data Entry</h3>
+            <form id="healthForm">
+                <div class="input-grid">
+                    <div class="tech-input"><label>Steps</label><input type="number" id="steps" value="0"></div>
+                    <div class="tech-input"><label>Sleep</label><input type="number" id="sleep" value="0"></div>
+                    <div class="tech-input"><label>Water</label><input type="number" id="water" value="0"></div>
+                    <div class="tech-input">
+                        <label>Mood</label>
+                        <select id="mood">
+                            <option value="Low">Low Power</option>
+                            <option value="Average">Balanced</option>
+                            <option value="Good">Optimized</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary-tech">Execute Analysis</button>
+            </form>
         </div>
-        <button type="submit" class="btn-primary-tech">Execute Analysis</button>
-      </form>
+
+        <div class="card tech-card">
+            <h3>Optimization Metrics</h3>
+            <div class="tech-prog">Step Efficiency <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
+            <div class="tech-prog">Hydration Level <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
+        </div>
+    </section>
+
+    <div id="diagnosticLoader" class="loader-container" style="display:none;">
+        <div class="scanner"></div>
+        <p class="terminal-text">SCANNING BIOMETRICS...</p>
     </div>
 
-    <div class="card tech-card">
-      <h3>Optimization Metrics</h3>
-      <div class="tech-prog">Steps <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-      <div class="tech-prog">Hydration <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-    </div>
-  </section>
-
-  <div id="diagnosticLoader" class="loader-container" style="display:none;">
-    <div class="scanner"></div>
-    <p class="terminal-text">SCANNING BIOMETRICS...</p>
-  </div>
-
-  <section id="ai-insights" class="tech-result" style="display:none;">
-    <div class="card tech-card terminal-style"><div id="report"></div></div>
-    <div class="card tech-card advice-box">
-       <h3>AI Assistant Feed</h3>
-       <div id="videoContainer"></div>
-       <div id="adviceContent"></div>
-    </div>
-  </section>
+    <section id="ai-insights" class="tech-result" style="display:none;">
+        <div class="card tech-card terminal-style"><div id="report"></div></div>
+        <div class="card tech-card advice-box">
+            <h3>AI Disease Assistant</h3>
+            <div id="videoContainer"></div>
+            <div id="adviceContent" class="terminal-text"></div>
+        </div>
+    </section>
 </main>
 
 <script src="script.js"></script>
