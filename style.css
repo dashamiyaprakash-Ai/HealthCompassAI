@@ -1,30 +1,77 @@
-:root {
-  --bg-main: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a; --border: #e2e8f0;
-  --tech-blue: #0ea5e9; --tech-purple: #a855f7; --tech-cyan: #0d9488; --tech-red: #ff2e63;
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.google) {
+        google.accounts.id.initialize({
+            client_id: "YOUR_ID",
+            callback: () => { document.getElementById('loginOverlay').style.display='none'; }
+        });
+        google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "outline" });
+    }
+    updateStreakDisplay();
+});
+
+document.getElementById("healthForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = {
+        steps: +document.getElementById("steps").value,
+        sleep: +document.getElementById("sleep").value,
+        water: +document.getElementById("water").value,
+        mood: document.getElementById("mood").value
+    };
+    runDiagnostic(data);
+});
+
+function runDiagnostic(data) {
+    const loader = document.getElementById("diagnosticLoader");
+    const insights = document.getElementById("ai-insights");
+    const score = (Math.min(data.steps/10000, 1)*40) + (Math.min(data.sleep/8, 1)*30) + (Math.min(data.water/3, 1)*30);
+    const isCritical = (data.steps === 0 && data.sleep === 0 && data.water === 0);
+
+    loader.style.display = "block";
+    insights.style.display = "none";
+    if (isCritical) loader.classList.add("reboot-mode");
+
+    setTimeout(() => {
+        loader.style.display = "none";
+        insights.style.display = "grid";
+        
+        let status = isCritical ? "STATUS: VERY MUCH LOW 🔴" : "STATUS: BALANCED 🟡";
+        let videoId = isCritical ? "6_vOInS_A8c" : "hBEKGBLAB80";
+        if (score > 80) status = "STATUS: OPTIMIZED 🟢";
+
+        document.getElementById("report").innerHTML = `<h3 style="color:${isCritical ? '#ff2e63' : '#0ea5e9'}">${status}</h3><p>> SCORE: ${Math.round(score)}%</p>`;
+        document.getElementById("videoContainer").innerHTML = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0"></iframe>`;
+        document.getElementById("adviceContent").innerText = isCritical ? "System Stagnation. Immediate hydration required." : "Metrics synced. Keep moving.";
+
+        // Bar Rise Logic: Only rise if value > 0
+        document.getElementById("barSteps").style.width = data.steps > 0 ? (Math.min(data.steps/100, 100) + "%") : "0%";
+        document.getElementById("barWater").style.width = data.water > 0 ? (Math.min(data.water/3*100, 100) + "%") : "0%";
+        document.getElementById("barSleep").style.width = data.sleep > 0 ? (Math.min(data.sleep/8*100, 100) + "%") : "0%";
+        document.getElementById("userScoreBar").style.width = score + "%";
+        document.getElementById("globalRank").innerText = score > 80 ? "RANK: #125 (Top 5%)" : "RANK: #12,890 (Top 40%)";
+    }, 1500);
 }
-body.dark {
-  --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --border: #334155;
+
+function saveDailyData() {
+    let streak = parseInt(localStorage.getItem("streak") || 0) + 1;
+    localStorage.setItem("streak", streak);
+    updateStreakDisplay();
+    alert("Data Synced! Streak Updated.");
 }
-body { background: var(--bg-main); color: var(--text-main); font-family: sans-serif; transition: 0.3s; margin: 0; }
 
-.health-logo { position: relative; display: inline-block; color: var(--tech-blue); font-size: 1.5rem; }
-.pulse-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--tech-red); font-size: 0.7rem; animation: logo-beat 1.5s infinite; }
-@keyframes logo-beat { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.3); } }
+function updateStreakDisplay() {
+    document.getElementById("streakCount").innerText = localStorage.getItem("streak") || 0;
+}
 
-.tech-nav { display: flex; justify-content: space-between; padding: 1rem 5%; background: var(--bg-card); border-bottom: 1px solid var(--border); }
-.tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-.tech-card { background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+function generateChallenge() {
+    const tasks = ["Drink 1L Water", "Walk 2000 steps now", "5 min meditation"];
+    document.getElementById("challengeText").innerText = tasks[Math.floor(Math.random()*tasks.length)];
+}
 
-.bar-shell { background: rgba(0,0,0,0.1); height: 12px; border-radius: 6px; overflow: hidden; margin: 10px 0; }
-.bar-core { height: 100%; width: 0; transition: 1.5s cubic-bezier(0.1, 0, 0.1, 1); }
-.bar-core[style*="width: 0%"] { box-shadow: none !important; background: transparent !important; }
+function exportToPDF() { window.print(); }
 
-.blue-glow { background: var(--tech-blue); box-shadow: 0 0 10px var(--tech-blue); }
-.cyan-glow { background: var(--tech-cyan); box-shadow: 0 0 10px var(--tech-cyan); }
-.purple-glow { background: var(--tech-purple); box-shadow: 0 0 10px var(--tech-purple); }
+function shareProgress() {
+    const text = `I'm at ${document.getElementById("streakCount").innerText} day streak on HealthCompass AI!`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
+}
 
-.scanner { width: 100%; height: 3px; background: var(--tech-blue); animation: scan 2s infinite; }
-@keyframes scan { 0% { transform: translateY(0); } 50% { transform: translateY(80px); } 100% { transform: translateY(0); } }
-.reboot-mode .scanner { background: var(--tech-red); box-shadow: 0 0 15px var(--tech-red); }
-
-@media (max-width: 768px) { .tech-grid { grid-template-columns: 1fr; } }
+function toggleTheme() { document.body.classList.toggle("dark"); }
