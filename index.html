@@ -4,12 +4,24 @@
   <meta charset="UTF-8">
   <title>HealthCompass AI | Team BioLogic</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+
+  <!-- Google Sign-In -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body class="dark">
 
+<!-- Login Overlay -->
 <div id="loginOverlay" class="login-screen">
   <div class="card tech-card login-box">
     <div class="health-logo-large">
@@ -19,69 +31,130 @@
     <h2>HealthCompass <span class="ai-tag">AI</span></h2>
     <p>Secure Biometric Access Required</p>
     <div id="googleBtn" class="google-auth-container"></div>
-    <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Proceed as Guest</button>
+    <button class="skip-btn"
+      onclick="document.getElementById('loginOverlay').style.display='none'">
+      Proceed as Guest
+    </button>
   </div>
 </div>
 
+<!-- Navbar -->
 <header class="navbar tech-nav">
   <div class="logo-wrapper">
-    <div class="health-logo"><i class="fas fa-microchip"></i><i class="fas fa-heartbeat pulse-overlay"></i></div>
+    <div class="health-logo">
+      <i class="fas fa-microchip"></i>
+      <i class="fas fa-heartbeat pulse-overlay"></i>
+    </div>
     <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
   </div>
-  <div class="streak-mini"><i class="fas fa-bolt"></i> Streak: <span id="streakCount">0</span></div>
+  <div class="streak-mini">
+    <i class="fas fa-bolt"></i> Streak:
+    <span id="streakCount">0</span>
+  </div>
 </header>
 
+<!-- Main -->
 <main class="main-container">
+
   <div class="tech-grid top-tier">
     <div class="card tech-card">
       <h3><i class="fas fa-terminal"></i> Data Entry</h3>
+
       <form id="healthForm">
         <div class="input-grid">
-          <div class="tech-input"><label>Steps</label><input type="number" id="steps" value="0" min="0"></div>
-          <div class="tech-input"><label>Sleep (h)</label><input type="number" id="sleep" value="0" min="0"></div>
-          <div class="tech-input"><label>Water (L)</label><input type="number" id="water" value="0" min="0"></div>
+          <div class="tech-input">
+            <label>Steps</label>
+            <input type="number" id="steps" min="0" value="0">
+          </div>
+
+          <div class="tech-input">
+            <label>Sleep (h)</label>
+            <input type="number" id="sleep" min="0" value="0">
+          </div>
+
+          <div class="tech-input">
+            <label>Water (L)</label>
+            <input type="number" id="water" min="0" value="0">
+          </div>
+
           <div class="tech-input">
             <label>Mood</label>
-            <select id="mood"><option value="Low">Low Power</option><option value="Good">Optimized</option></select>
+            <select id="mood">
+              <option value="Low">Low Power</option>
+              <option value="Good">Optimized</option>
+            </select>
           </div>
         </div>
-        <button type="submit" class="btn-primary-tech">Execute Analysis</button>
+
+        <button type="submit" class="btn-primary-tech">
+          Execute Analysis
+        </button>
       </form>
     </div>
 
     <div class="card tech-card">
       <h3><i class="fas fa-layer-group"></i> Real-time Metrics</h3>
-      <div class="tech-prog">Steps <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-      <div class="tech-prog">Hydration <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-      <div class="tech-prog">Sleep <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
+
+      <div class="tech-prog">
+        Steps
+        <div class="bar-shell">
+          <div id="barSteps" class="bar-core blue-glow"></div>
+        </div>
+      </div>
+
+      <div class="tech-prog">
+        Hydration
+        <div class="bar-shell">
+          <div id="barWater" class="bar-core cyan-glow"></div>
+        </div>
+      </div>
+
+      <div class="tech-prog">
+        Sleep
+        <div class="bar-shell">
+          <div id="barSleep" class="bar-core purple-glow"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>SCANNING...</p></div>
+  <div id="diagnosticLoader" class="loader-container" style="display:none;">
+    <div class="scanner"></div>
+    <p>SCANNING...</p>
+  </div>
 
   <section id="ai-insights" class="tech-result" style="display:none;">
     <div id="printableArea" class="card tech-card terminal-style">
-        <div id="reportHeader" style="display:none;">
-            <h1 style="color:#0ea5e9;">HEALTHCOMPASS AI: CLINICAL REPORT</h1>
-            <p>Generated: <span id="reportDate"></span></p>
-            <hr>
-        </div>
-        <div id="report"></div>
+
+      <div id="reportHeader" style="display:none;">
+        <h1 style="color:#0ea5e9;">HEALTHCOMPASS AI: CLINICAL REPORT</h1>
+        <p>Generated: <span id="reportDate"></span></p>
+        <hr>
+      </div>
+
+      <div id="report"></div>
     </div>
-    
+
     <div class="card tech-card advice-box">
-       <h3>AI Optimization Protocol</h3>
-       <div class="video-responsive" id="videoContainer"></div>
-       <div id="adviceContent" class="terminal-text"></div>
+      <h3>AI Optimization Protocol</h3>
+      <div class="video-responsive" id="videoContainer"></div>
+      <div id="adviceContent" class="terminal-text"></div>
     </div>
   </section>
+
 </main>
 
 <footer class="tech-footer">
-  <button onclick="printReport()" class="btn-action"><i class="fas fa-print"></i> Export Analysis</button>
-  <button onclick="saveDailyData()" class="btn-action"><i class="fas fa-save"></i> Save Daily</button>
+  <button onclick="printReport()" class="btn-action">
+    <i class="fas fa-print"></i> Export Analysis
+  </button>
+  <button onclick="saveDailyData()" class="btn-action">
+    <i class="fas fa-save"></i> Save Daily
+  </button>
 </footer>
 
-<script src="script.js"></script>
+<!-- Local JS -->
+<script src="./script.js"></script>
+
 </body>
 </html>
