@@ -1,77 +1,92 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Google Sign-In Init
     if (window.google) {
         google.accounts.id.initialize({
-            client_id: "YOUR_ID",
+            client_id: "YOUR_GOOGLE_ID", // Replace with your ID if needed
             callback: () => { document.getElementById('loginOverlay').style.display='none'; }
         });
-        google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "outline" });
+        google.accounts.id.renderButton(document.getElementById("googleBtn"), { theme: "filled_blue", size: "large" });
     }
-    updateStreakDisplay();
+    updateStreak();
 });
 
 document.getElementById("healthForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const data = {
-        steps: +document.getElementById("steps").value,
-        sleep: +document.getElementById("sleep").value,
-        water: +document.getElementById("water").value,
-        mood: document.getElementById("mood").value
+        steps: Math.max(0, +document.getElementById("steps").value || 0),
+        sleep: Math.max(0, +document.getElementById("sleep").value || 0),
+        water: Math.max(0, +document.getElementById("water").value || 0)
     };
-    runDiagnostic(data);
+    runAnalysis(data);
 });
 
-function runDiagnostic(data) {
+function runAnalysis(data) {
     const loader = document.getElementById("diagnosticLoader");
     const insights = document.getElementById("ai-insights");
+    
+    // Weighted Score: Steps (40%), Sleep (30%), Water (30%)
     const score = (Math.min(data.steps/10000, 1)*40) + (Math.min(data.sleep/8, 1)*30) + (Math.min(data.water/3, 1)*30);
-    const isCritical = (data.steps === 0 && data.sleep === 0 && data.water === 0);
 
     loader.style.display = "block";
     insights.style.display = "none";
-    if (isCritical) loader.classList.add("reboot-mode");
 
     setTimeout(() => {
         loader.style.display = "none";
         insights.style.display = "grid";
         
-        let status = isCritical ? "STATUS: VERY MUCH LOW 🔴" : "STATUS: BALANCED 🟡";
-        let videoId = isCritical ? "6_vOInS_A8c" : "hBEKGBLAB80";
-        if (score > 80) status = "STATUS: OPTIMIZED 🟢";
+        document.getElementById("reportDate").innerText = new Date().toLocaleString();
 
-        document.getElementById("report").innerHTML = `<h3 style="color:${isCritical ? '#ff2e63' : '#0ea5e9'}">${status}</h3><p>> SCORE: ${Math.round(score)}%</p>`;
-        document.getElementById("videoContainer").innerHTML = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0"></iframe>`;
-        document.getElementById("adviceContent").innerText = isCritical ? "System Stagnation. Immediate hydration required." : "Metrics synced. Keep moving.";
+        let status, videoId, advice;
 
-        // Bar Rise Logic: Only rise if value > 0
+        // SPECIFIC LOGIC FOR VIDEO URLS
+        if (score < 20) {
+            status = "VERY MUCH LOW 🔴";
+            videoId = "ziCRIWMOjGo"; // Your provided link for low results
+            advice = "CRITICAL: You are in the stagnation zone. Watch this for immediate motivation.";
+        } else if (score > 80) {
+            status = "OPTIMIZED 🟢";
+            videoId = "6A7Rbl_FKMU"; // Your provided link for brain exercises
+            advice = "EXCELLENT: Peak performance achieved. Try these advanced brain exercises.";
+        } else {
+            status = "BALANCED 🟡";
+            videoId = "hBEKGBLAB80"; // Default protocol
+            advice = "STABLE: You are doing well. Maintain hydration and consistent rest cycles.";
+        }
+
+        document.getElementById("report").innerHTML = `
+            <h2 style="color:${score < 20 ? '#ff2e63' : '#0ea5e9'}">STATUS: ${status}</h2>
+            <div style="font-size: 1.1rem; line-height: 1.8;">
+                <p><strong>Step Count:</strong> ${data.steps} / 10,000</p>
+                <p><strong>Sleep Recorded:</strong> ${data.sleep} Hours</p>
+                <p><strong>Hydration Level:</strong> ${data.water} Liters</p>
+                <hr style="border:0; border-top:1px solid #334155;">
+                <p><strong>Overall AI Score:</strong> ${Math.round(score)}%</p>
+            </div>
+        `;
+
+        // Update Video using Embed logic
+        document.getElementById("videoContainer").innerHTML = `
+            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+        `;
+        document.getElementById("adviceContent").innerText = advice;
+
+        // FIXED: Bar rise logic (No rise if 0)
         document.getElementById("barSteps").style.width = data.steps > 0 ? (Math.min(data.steps/100, 100) + "%") : "0%";
         document.getElementById("barWater").style.width = data.water > 0 ? (Math.min(data.water/3*100, 100) + "%") : "0%";
         document.getElementById("barSleep").style.width = data.sleep > 0 ? (Math.min(data.sleep/8*100, 100) + "%") : "0%";
-        document.getElementById("userScoreBar").style.width = score + "%";
-        document.getElementById("globalRank").innerText = score > 80 ? "RANK: #125 (Top 5%)" : "RANK: #12,890 (Top 40%)";
+
     }, 1500);
 }
 
+function printReport() { window.print(); }
+
 function saveDailyData() {
-    let streak = parseInt(localStorage.getItem("streak") || 0) + 1;
-    localStorage.setItem("streak", streak);
-    updateStreakDisplay();
+    let streak = parseInt(localStorage.getItem("hc_streak") || 0) + 1;
+    localStorage.setItem("hc_streak", streak);
+    updateStreak();
     alert("Data Synced! Streak Updated.");
 }
 
-function updateStreakDisplay() {
-    document.getElementById("streakCount").innerText = localStorage.getItem("streak") || 0;
+function updateStreak() {
+    document.getElementById("streakCount").innerText = localStorage.getItem("hc_streak") || 0;
 }
-
-function generateChallenge() {
-    const tasks = ["Drink 1L Water", "Walk 2000 steps now", "5 min meditation"];
-    document.getElementById("challengeText").innerText = tasks[Math.floor(Math.random()*tasks.length)];
-}
-
-function exportToPDF() { window.print(); }
-
-function shareProgress() {
-    const text = `I'm at ${document.getElementById("streakCount").innerText} day streak on HealthCompass AI!`;
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
-}
-
-function toggleTheme() { document.body.classList.toggle("dark"); }
