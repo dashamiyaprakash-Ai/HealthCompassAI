@@ -44,9 +44,9 @@
 
     <div class="card tech-card">
       <h3><i class="fas fa-chart-line"></i> Optimization Metrics</h3>
-      <div class="tech-prog"><i class="fas fa-shoe-prints"></i> Step Efficiency (Goal: 8k) <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-      <div class="tech-prog"><i class="fas fa-faucet"></i> Hydration Level <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-      <div class="tech-prog"><i class="fas fa-bed"></i> Sleep Quality <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
+      <div class="tech-prog"><i class="fas fa-shoe-prints"></i> Steps (Goal: 8k) <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
+      <div class="tech-prog"><i class="fas fa-faucet"></i> Hydration (Goal: 3L) <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
+      <div class="tech-prog"><i class="fas fa-bed"></i> Sleep (Goal: 8h) <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
     </div>
   </div>
 
@@ -73,11 +73,11 @@
     </div>
   </div>
 
-  <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>CALCULATING BIOMETRICS...</p></div>
+  <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>SYNCING ALGORITHM...</p></div>
 
   <section id="ai-insights" class="tech-result" style="display:none;">
     <div id="printableArea" class="card tech-card terminal-style">
-        <div id="reportHeader" style="display:none;"><h1>HEALTHCOMPASS AI: BIO-DIAGNOSTIC</h1><hr></div>
+        <div id="reportHeader" style="display:none;"><h1>HEALTHCOMPASS AI: BIO-REPORT</h1><hr></div>
         <div id="report"></div>
     </div>
     
@@ -92,13 +92,10 @@
 </main>
 
 <footer class="tech-footer">
-  <button onclick="window.print()" class="btn-action"><i class="fas fa-file-pdf"></i> Export Report</button>
-  <button onclick="saveDailyData()" class="btn-action"><i class="fas fa-save"></i> Save Daily</button>
+  <button onclick="window.print()" class="btn-action"><i class="fas fa-file-pdf"></i> Export Result</button>
+  <button onclick="saveDailyData()" class="btn-action"><i class="fas fa-save"></i> Save & Sync</button>
 </footer>
 
 <script src="script.js"></script>
 </body>
 </html>
-
-
-
