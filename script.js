@@ -23,7 +23,7 @@ function runAnalysis(data) {
     const loader = document.getElementById("diagnosticLoader");
     const insights = document.getElementById("ai-insights");
     
-    // ALGORITHM: Weighted Mode Calculation
+    // RESTORED ALGORITHM: Multivariate Weighted Mode Calculation
     const stepWeight = Math.min(data.steps / 8000, 1) * 40;
     const sleepWeight = Math.min(data.sleep / 8, 1) * 30;
     const waterWeight = Math.min(data.water / 3, 1) * 30;
@@ -41,33 +41,32 @@ function runAnalysis(data) {
         if (totalScore < 20) {
             status = "VERY MUCH LOW 🔴";
             videoId = "ziCRIWMOjGo"; 
-            advice = "Diagnostic Alert: System Stagnation. Immediate physical activity required.";
+            advice = "Algorithm Alert: Critical Stagnation. Immediate physical activity required.";
         } else if (data.steps >= 7000 && totalScore > 75) {
             status = "OPTIMIZED 🟢";
             videoId = "6A7Rbl_FKMU";
-            advice = "Diagnostic Verified: Peak Performance Window reached.";
+            advice = "Algorithm Verified: Peak Performance Window achieved.";
         } else {
             status = "BALANCED 🟡";
             videoId = "hBEKGBLAB80";
-            advice = "Diagnostic Update: System Stable.";
+            advice = "Algorithm Status: Stable. Target 7,000+ steps for Optimization.";
         }
 
         document.getElementById("report").innerHTML = `
-            <h2>MODE TYPE: ${totalScore}% Efficiency</h2>
-            <p><strong>Status:</strong> ${status}</p>
-            <p><strong>Metrics:</strong> ${data.steps} Steps | ${data.sleep}h Sleep | ${data.water}L Water</p>`;
+            <h2>DIAGNOSTIC: ${totalScore}% Optimized</h2>
+            <div style="font-size: 1.1rem; line-height: 1.6;">
+                <p><strong>Clinical Status:</strong> ${status}</p>
+                <p><strong>Metrics:</strong> ${data.steps} Steps | ${data.sleep}h Sleep | ${data.water}L Water</p>
+                <hr style="border-color:#334155">
+                <p><i>Sync Status: Global Node Active</i></p>
+            </div>`;
 
         document.getElementById("videoContainer").innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
         document.getElementById("adviceContent").innerText = advice;
 
-        // FIXED BAR LOGIC: Ensures rise only when value > 0
-        // Steps Bar (Target 8000)
+        // FIXED BAR LOGIC: Precise rise for Hydration and Sleep
         document.getElementById("barSteps").style.width = data.steps > 0 ? (Math.min((data.steps / 8000) * 100, 100) + "%") : "0%";
-        
-        // Hydration Bar (Target 3L)
         document.getElementById("barWater").style.width = data.water > 0 ? (Math.min((data.water / 3) * 100, 100) + "%") : "0%";
-        
-        // Sleep Bar (Target 8h)
         document.getElementById("barSleep").style.width = data.sleep > 0 ? (Math.min((data.sleep / 8) * 100, 100) + "%") : "0%";
         
         updateGlobalRanking(totalScore);
@@ -91,7 +90,7 @@ function generateChallenge() {
 
 function shareChallenge() {
     const task = document.getElementById("challengeText").innerText;
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("My HealthCompass Task: " + task)}`);
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("Accepted my HealthCompass Task: " + task)}`);
 }
 
 function saveDailyData() {
