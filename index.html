@@ -8,29 +8,33 @@
   <!-- Local CSS -->
   <link rel="stylesheet" href="./style.css">
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+  <!-- Font Awesome (GitHub-safe CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
-  <!-- Google Sign-In -->
+  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body class="dark">
 
-<!-- Login Overlay -->
+<!-- LOGIN OVERLAY -->
 <div id="loginOverlay" class="login-screen">
   <div class="card tech-card login-box">
     <div class="health-logo-large">
       <i class="fas fa-microchip"></i>
       <i class="fas fa-heartbeat pulse-overlay"></i>
     </div>
+
     <h2>HealthCompass <span class="ai-tag">AI</span></h2>
-    <p>Secure Biometric Access Required</p>
+    <p><i class="fas fa-shield-alt"></i> Secure Biometric Access Required</p>
+
     <div id="googleBtn" class="google-auth-container"></div>
+
     <button class="skip-btn"
       onclick="document.getElementById('loginOverlay').style.display='none'">
       Proceed as Guest
@@ -38,115 +42,153 @@
   </div>
 </div>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 <header class="navbar tech-nav">
   <div class="logo-wrapper">
     <div class="health-logo">
-      <i class="fas fa-microchip"></i>
+      <i class="fas fa-compass"></i>
       <i class="fas fa-heartbeat pulse-overlay"></i>
     </div>
-    <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
+    <span class="brand-name">
+      HealthCompass <span class="ai-tag">AI</span>
+    </span>
   </div>
+
   <div class="streak-mini">
-    <i class="fas fa-bolt"></i> Streak:
-    <span id="streakCount">0</span>
+    <i class="fas fa-fire-alt" style="color:#ff8c00"></i>
+    Streak: <span id="streakCount">0</span>
   </div>
 </header>
 
-<!-- Main -->
+<!-- MAIN -->
 <main class="main-container">
 
+  <!-- TOP GRID -->
   <div class="tech-grid top-tier">
+
+    <!-- INPUT CARD -->
     <div class="card tech-card">
-      <h3><i class="fas fa-terminal"></i> Data Entry</h3>
+      <h3><i class="fas fa-edit"></i> Daily Biometrics</h3>
 
       <form id="healthForm">
-        <div class="input-grid">
-          <div class="tech-input">
+        <div class="large-input-grid">
+
+          <div class="tech-input box-step">
+            <i class="fas fa-walking"></i>
             <label>Steps</label>
             <input type="number" id="steps" min="0" value="0">
           </div>
 
-          <div class="tech-input">
+          <div class="tech-input box-sleep">
+            <i class="fas fa-moon"></i>
             <label>Sleep (h)</label>
             <input type="number" id="sleep" min="0" value="0">
           </div>
 
-          <div class="tech-input">
+          <div class="tech-input box-water">
+            <i class="fas fa-tint"></i>
             <label>Water (L)</label>
             <input type="number" id="water" min="0" value="0">
           </div>
 
-          <div class="tech-input">
-            <label>Mood</label>
-            <select id="mood">
-              <option value="Low">Low Power</option>
-              <option value="Good">Optimized</option>
-            </select>
-          </div>
         </div>
 
         <button type="submit" class="btn-primary-tech">
-          Execute Analysis
+          <i class="fas fa-brain"></i> ANALYZE NOW
         </button>
       </form>
     </div>
 
+    <!-- METRICS -->
     <div class="card tech-card">
-      <h3><i class="fas fa-layer-group"></i> Real-time Metrics</h3>
+      <h3><i class="fas fa-chart-line"></i> Optimization Metrics</h3>
 
       <div class="tech-prog">
-        Steps
-        <div class="bar-shell">
-          <div id="barSteps" class="bar-core blue-glow"></div>
-        </div>
+        <i class="fas fa-shoe-prints"></i> Steps (Goal: 8000)
+        <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div>
       </div>
 
       <div class="tech-prog">
-        Hydration
-        <div class="bar-shell">
-          <div id="barWater" class="bar-core cyan-glow"></div>
-        </div>
+        <i class="fas fa-faucet"></i> Hydration
+        <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div>
       </div>
 
       <div class="tech-prog">
-        Sleep
-        <div class="bar-shell">
-          <div id="barSleep" class="bar-core purple-glow"></div>
-        </div>
+        <i class="fas fa-bed"></i> Sleep
+        <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div>
       </div>
     </div>
   </div>
 
-  <div id="diagnosticLoader" class="loader-container" style="display:none;">
-    <div class="scanner"></div>
-    <p>SCANNING...</p>
-  </div>
+  <!-- MIDDLE GRID -->
+  <div class="tech-grid middle-tier">
 
-  <section id="ai-insights" class="tech-result" style="display:none;">
-    <div id="printableArea" class="card tech-card terminal-style">
+    <!-- GLOBAL RANK -->
+    <div class="card tech-card ranking-card">
+      <h3><i class="fas fa-globe-americas"></i> Global Network Standing</h3>
 
-      <div id="reportHeader" style="display:none;">
-        <h1 style="color:#0ea5e9;">HEALTHCOMPASS AI: CLINICAL REPORT</h1>
-        <p>Generated: <span id="reportDate"></span></p>
-        <hr>
+      <div class="rank-container">
+        <div class="rank-circle">
+          <span id="percentileText">0%</span>
+          <small>TOP</small>
+        </div>
+        <div class="rank-details">
+          <p id="rankTier">Tier: Syncing...</p>
+          <p><i class="fas fa-users"></i> Global Nodes: 142,000+</p>
+        </div>
       </div>
 
+      <div class="tech-prog">
+        Global Standing
+        <div class="bar-shell"><div id="barGlobal" class="bar-core gold-glow"></div></div>
+      </div>
+    </div>
+
+    <!-- DAILY TASK -->
+    <div class="card tech-card daily-challenge-card">
+      <h3><i class="fas fa-trophy"></i> Daily Task</h3>
+      <p id="challengeText">Generate task to start streak!</p>
+
+      <div class="challenge-actions">
+        <button onclick="generateChallenge()" class="btn-challenge">New Task</button>
+        <button onclick="shareChallenge()" class="btn-share">
+          <i class="fab fa-x-twitter"></i> Share
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADER -->
+  <div id="diagnosticLoader" class="loader-container" style="display:none;">
+    <div class="scanner"></div>
+    <p>PROCESSING...</p>
+  </div>
+
+  <!-- AI RESULT -->
+  <section id="ai-insights" class="tech-result" style="display:none;">
+    <div id="printableArea" class="card tech-card terminal-style">
+      <div id="reportHeader" style="display:none;">
+        <h1>HEALTHCOMPASS AI: CLINICAL REPORT</h1>
+        <hr>
+      </div>
       <div id="report"></div>
     </div>
 
-    <div class="card tech-card advice-box">
-      <h3>AI Optimization Protocol</h3>
-      <div class="video-responsive" id="videoContainer"></div>
-      <div id="adviceContent" class="terminal-text"></div>
+    <div class="video-wrapper-centered">
+      <div class="card tech-card video-card">
+        <h3><i class="fas fa-play-circle"></i> AI Optimization Protocol</h3>
+        <div id="videoContainer" class="video-container-fixed"></div>
+        <div id="adviceContent" class="advice-text"></div>
+      </div>
     </div>
   </section>
 
 </main>
 
+<!-- FOOTER -->
 <footer class="tech-footer">
-  <button onclick="printReport()" class="btn-action">
-    <i class="fas fa-print"></i> Export Analysis
+  <button onclick="window.print()" class="btn-action">
+    <i class="fas fa-file-pdf"></i> Export Report
   </button>
   <button onclick="saveDailyData()" class="btn-action">
     <i class="fas fa-save"></i> Save Daily
