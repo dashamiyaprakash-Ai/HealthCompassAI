@@ -14,7 +14,7 @@
   <div class="card tech-card login-box">
     <div class="health-logo-large"><i class="fas fa-microchip"></i><i class="fas fa-heartbeat pulse-overlay"></i></div>
     <h2>HealthCompass <span class="ai-tag">AI</span></h2>
-    <p><i class="fas fa-shield-alt"></i> Secure Biometric Access Required</p>
+    <p>Secure Biometric Access Required</p>
     <div id="googleBtn"></div>
     <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Proceed as Guest</button>
   </div>
@@ -25,7 +25,7 @@
     <div class="health-logo"><i class="fas fa-compass"></i><i class="fas fa-heartbeat pulse-overlay"></i></div>
     <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
   </div>
-  <div class="streak-mini"><i class="fas fa-fire-alt" style="color:#ff8c00"></i> Streak: <span id="streakCount">0</span></div>
+  <div class="streak-mini"><i class="fas fa-fire-alt"></i> Streak: <span id="streakCount">0</span></div>
 </header>
 
 <main class="main-container">
@@ -38,52 +38,26 @@
           <div class="tech-input box-sleep"><i class="fas fa-moon"></i><label>Sleep (h)</label><input type="number" id="sleep" value="0"></div>
           <div class="tech-input box-water"><i class="fas fa-tint"></i><label>Water (L)</label><input type="number" id="water" value="0"></div>
         </div>
-        <button type="submit" class="btn-primary-tech"><i class="fas fa-brain"></i> ANALYZE NOW</button>
+        <button type="submit" class="btn-primary-tech">ANALYZE NOW</button>
       </form>
     </div>
 
     <div class="card tech-card">
-      <h3><i class="fas fa-chart-line"></i> Optimization Metrics</h3>
-      <div class="tech-prog"><i class="fas fa-shoe-prints"></i> Steps (Goal: 8k) <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-      <div class="tech-prog"><i class="fas fa-faucet"></i> Hydration (Goal: 3L) <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-      <div class="tech-prog"><i class="fas fa-bed"></i> Sleep (Goal: 8h) <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
+      <h3><i class="fas fa-chart-line"></i> Metrics</h3>
+      <div class="tech-prog">Steps <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
+      <div class="tech-prog">Hydration <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
+      <div class="tech-prog">Sleep <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
     </div>
   </div>
 
-  <div class="tech-grid middle-tier">
-    <div class="card tech-card ranking-card">
-        <h3><i class="fas fa-globe-americas"></i> Global Ranking</h3>
-        <div class="rank-container">
-            <div class="rank-circle"><span id="percentileText">0%</span><small>TOP</small></div>
-            <div class="rank-details">
-                <p id="rankTier">Tier: Syncing...</p>
-                <p><i class="fas fa-users"></i> Global Nodes: 142,000+</p>
-            </div>
-        </div>
-        <div class="tech-prog">Standing <div class="bar-shell"><div id="barGlobal" class="bar-core gold-glow"></div></div></div>
-    </div>
-
-    <div class="card tech-card daily-challenge-card">
-        <h3><i class="fas fa-trophy"></i> Daily Task</h3>
-        <p id="challengeText">Generate task to start streak!</p>
-        <div class="challenge-actions">
-            <button onclick="generateChallenge()" class="btn-challenge">New Task</button>
-            <button onclick="shareChallenge()" class="btn-share"><i class="fab fa-x-twitter"></i> Share</button>
-        </div>
-    </div>
-  </div>
-
-  <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>SYNCING ALGORITHM...</p></div>
+  <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div></div>
 
   <section id="ai-insights" class="tech-result" style="display:none;">
     <div id="printableArea" class="card tech-card terminal-style">
-        <div id="reportHeader" style="display:none;"><h1>HEALTHCOMPASS AI: BIO-REPORT</h1><hr></div>
         <div id="report"></div>
     </div>
-    
     <div class="video-wrapper-centered">
         <div class="card tech-card video-card">
-            <h3><i class="fas fa-play-circle"></i> AI Optimization Protocol</h3>
             <div class="video-container-fixed" id="videoContainer"></div>
             <div id="adviceContent" class="advice-text"></div>
         </div>
@@ -92,8 +66,8 @@
 </main>
 
 <footer class="tech-footer">
-  <button onclick="window.print()" class="btn-action"><i class="fas fa-file-pdf"></i> Export Result</button>
-  <button onclick="saveDailyData()" class="btn-action"><i class="fas fa-save"></i> Save & Sync</button>
+  <button onclick="window.print()" class="btn-action">Export Result</button>
+  <button onclick="saveDailyData()" class="btn-action">Save Daily</button>
 </footer>
 
 <script src="script.js"></script>
