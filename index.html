@@ -61,8 +61,8 @@
                 </div>
                 
                 <div class="tech-input full-width" style="margin-top: 10px;">
-                    <label>Reasoning for Difficulty</label>
-                    <input type="text" id="reasoning" placeholder="e.g., Poor sleep due to stress" required>
+                    <label>Reasoning</label>
+                    <input type="text" id="reasoning" placeholder="e.g., Slept late due to project deadline" required>
                 </div>
 
                 <button type="submit" class="btn-primary-tech">SYNC TO MEMORY CORE</button>
@@ -109,16 +109,20 @@
         <div id="printableArea" class="card tech-card terminal-style">
             <div id="reportHeader" style="display:none;">
                 <h1 style="color:#0ea5e9;">HealthCompass AI Report</h1>
+                <p>Memory Continuity Snapshot</p>
                 <hr>
             </div>
             <div id="report"></div>
         </div>
         
         <div class="action-dock">
-            <button onclick="window.print()" class="btn-action pdf-btn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+            <button onclick="window.print()" class="btn-action pdf-btn">
+                <i class="fas fa-file-pdf"></i> Export PDF
+            </button>
             <div class="share-group">
                 <button onclick="shareData('whatsapp')" class="btn-action whatsapp-btn"><i class="fab fa-whatsapp"></i></button>
                 <button onclick="shareData('twitter')" class="btn-action twitter-btn"><i class="fab fa-x-twitter"></i></button>
+                <button onclick="shareData('native')" class="btn-action share-btn"><i class="fas fa-share-alt"></i> Share All</button>
             </div>
         </div>
 
