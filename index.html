@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HealthCompass AI | BioLogic</title>
+    <title>HealthCompass AI | Memory Continuity System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="dark">
@@ -13,11 +13,11 @@
 <div id="loginOverlay" class="login-screen">
     <div class="card tech-card login-box">
         <div class="health-logo-large">
-            <i class="fas fa-microchip"></i>
-            <i class="fas fa-heartbeat pulse-overlay"></i>
+            <i class="fas fa-brain"></i>
+            <i class="fas fa-network-wired pulse-overlay"></i>
         </div>
         <h2>HealthCompass <span class="ai-tag">AI</span></h2>
-        <p><i class="fas fa-shield-alt"></i> Biometric Access Required</p>
+        <p>Human-AI Memory Continuity System</p>
         <div id="googleBtn"></div>
         <button onclick="document.getElementById('loginOverlay').style.display='none'" class="skip-btn">Proceed as Guest</button>
     </div>
@@ -25,70 +25,103 @@
 
 <header class="navbar tech-nav">
     <div class="logo-wrapper">
-        <div class="health-logo"><i class="fas fa-compass"></i><i class="fas fa-heartbeat pulse-overlay"></i></div>
+        <div class="health-logo"><i class="fas fa-compass"></i></div>
         <span class="brand-name">HealthCompass <span class="ai-tag">AI</span></span>
     </div>
-    <div class="streak-mini"><i class="fas fa-fire-alt"></i> Streak: <span id="streakCount">0</span></div>
+    <div class="streak-mini"><i class="fas fa-link"></i> Streak: <span id="streakCount">0</span></div>
 </header>
 
 <main class="main-container">
     <div class="tech-grid top-tier">
         <div class="card tech-card">
-            <h3><i class="fas fa-microchip"></i> Mode & Biometrics</h3>
+            <h3><i class="fas fa-fingerprint"></i> Daily Context Capture</h3>
             <form id="healthForm">
-                <div class="mode-selector-grid">
-                    <select id="analysisMode" class="tech-select">
-                        <option value="optimized">High Performance (Optimized)</option>
-                        <option value="balanced" selected>Standard Sync (Balanced)</option>
-                        <option value="low">Energy Saver (Low Power)</option>
-                    </select>
+                <div class="tech-input full-width">
+                    <label>Today's Goal (Intent)</label>
+                    <input type="text" id="userIntent" placeholder="e.g., Recovery Day / Marathon Training" required>
                 </div>
+
                 <div class="large-input-grid">
                     <div class="tech-input box-step"><i class="fas fa-walking"></i><label>Steps</label><input type="number" id="steps" value="0"></div>
                     <div class="tech-input box-sleep"><i class="fas fa-moon"></i><label>Sleep (h)</label><input type="number" id="sleep" value="0"></div>
                     <div class="tech-input box-water"><i class="fas fa-tint"></i><label>Water (L)</label><input type="number" id="water" value="0"></div>
                 </div>
-                <button type="submit" class="btn-primary-tech">EXECUTE BIO-ANALYSIS</button>
+
+                <div class="tech-input full-width" style="margin-top: 15px;">
+                    <label>Difficulty Level (Context)</label>
+                    <div class="select-wrapper">
+                        <select id="difficulty" class="tech-select">
+                            <option value="none">🟢 Normal Mode (No Issues)</option>
+                            <option value="fatigue">🔋 Low Battery (Fatigue/Sleep)</option>
+                            <option value="time">⏳ Time Crunch (Busy Schedule)</option>
+                            <option value="emotions">🧠 High Mental Load (Stress)</option>
+                            <option value="physical">🩹 Physical Limit (Injury/Pain)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="tech-input full-width" style="margin-top: 10px;">
+                    <label>Reasoning for Difficulty</label>
+                    <input type="text" id="reasoning" placeholder="e.g., Poor sleep due to stress" required>
+                </div>
+
+                <button type="submit" class="btn-primary-tech">SYNC TO MEMORY CORE</button>
             </form>
         </div>
 
         <div class="card tech-card">
-            <h3><i class="fas fa-chart-line"></i> Optimization Metrics</h3>
-            <div class="tech-prog">Steps <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
-            <div class="tech-prog">Hydration <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
-            <div class="tech-prog">Rest <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
-        </div>
-    </div>
-
-    <div class="tech-grid middle-tier">
-        <div class="card tech-card">
-            <h3><i class="fas fa-globe"></i> Global Ranking</h3>
-            <div class="rank-container">
-                <div class="rank-circle"><span id="percentileText">0%</span><small>TOP</small></div>
-                <div class="rank-details">
+            <h3><i class="fas fa-chart-network"></i> Live Metrics</h3>
+            <div class="tech-prog">Steps (Target 8k) <div class="bar-shell"><div id="barSteps" class="bar-core blue-glow"></div></div></div>
+            <div class="tech-prog">Hydration (3L) <div class="bar-shell"><div id="barWater" class="bar-core cyan-glow"></div></div></div>
+            <div class="tech-prog">Sleep (8h) <div class="bar-shell"><div id="barSleep" class="bar-core purple-glow"></div></div></div>
+            
+            <div class="rank-display">
+                <div class="rank-sphere"><span id="percentileText">0%</span><small>TOP</small></div>
+                <div class="rank-info">
                     <p id="rankTier">Tier: Syncing...</p>
                     <div class="bar-shell"><div id="barGlobal" class="bar-core gold-glow"></div></div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="tech-grid middle-tier">
         <div class="card tech-card challenge-card">
-            <h3><i class="fas fa-trophy"></i> Daily Task</h3>
-            <p id="challengeText" class="terminal-text">Syncing task nodes...</p>
-            <div class="challenge-actions">
-                <button onclick="generateChallenge()" class="btn-action">New Task</button>
-                <button onclick="shareOnSocial()" class="btn-action share-btn"><i class="fab fa-x-twitter"></i> Share</button>
+            <div class="challenge-header">
+                <h3><i class="fas fa-trophy"></i> Adaptive Challenge</h3>
+                <span class="badge" id="challengeType">AI Generated</span>
+            </div>
+            <p id="challengeText" class="terminal-text">Waiting for analysis to generate optimal task...</p>
+            <button onclick="shareData('native')" class="btn-action share-btn small-btn"><i class="fas fa-share-alt"></i> Share Challenge</button>
+        </div>
+        
+        <div class="card tech-card">
+            <h3><i class="fas fa-history"></i> Memory Timeline</h3>
+            <div id="decisionTimeline" class="timeline-container">
+                <p class="terminal-text">Initializing memory nodes...</p>
             </div>
         </div>
     </div>
 
-    <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>PROCESSING BIO-MODES...</p></div>
+    <div id="diagnosticLoader" class="loader-container" style="display:none;"><div class="scanner"></div><p>ACCESSING NEURAL MEMORY...</p></div>
 
     <section id="ai-insights" class="tech-result" style="display:none;">
         <div id="printableArea" class="card tech-card terminal-style">
-            <div id="reportHeader" style="display:none;"><h1>BIO-DIAGNOSTIC REPORT</h1><hr></div>
+            <div id="reportHeader" style="display:none;">
+                <h1 style="color:#0ea5e9;">HealthCompass AI Report</h1>
+                <hr>
+            </div>
             <div id="report"></div>
         </div>
+        
+        <div class="action-dock">
+            <button onclick="window.print()" class="btn-action pdf-btn"><i class="fas fa-file-pdf"></i> Export PDF</button>
+            <div class="share-group">
+                <button onclick="shareData('whatsapp')" class="btn-action whatsapp-btn"><i class="fab fa-whatsapp"></i></button>
+                <button onclick="shareData('twitter')" class="btn-action twitter-btn"><i class="fab fa-x-twitter"></i></button>
+            </div>
+        </div>
+
         <div class="video-wrapper-centered">
             <div class="card tech-card video-card">
                 <div class="video-container-fixed" id="videoContainer"></div>
@@ -99,8 +132,7 @@
 </main>
 
 <footer class="tech-footer">
-    <button onclick="window.print()" class="btn-action">Export Report</button>
-    <button onclick="saveDailyData()" class="btn-action">Save Daily</button>
+    <button onclick="clearMemory()" class="btn-action danger-btn">Reset Memory Core</button>
 </footer>
 
 <script src="script.js"></script>
